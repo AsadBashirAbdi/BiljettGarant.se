@@ -1,5 +1,4 @@
-
-Github kode:    <!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="sv">
 <head>
   <meta charset="utf-8" />
@@ -39,6 +38,10 @@ Github kode:    <!DOCTYPE html>
       --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
       --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
       --shadow-lg: 0 12px 30px rgba(0,0,0,0.08);
+    }
+    
+    body {
+      font-family: "sj_sans", arial, sans-serif;
     }
     
     [hidden] { display: none !important; }
@@ -132,9 +135,10 @@ Github kode:    <!DOCTYPE html>
        1) Layout / Sida / Rubriker
        ========================================================= */
     #bg-sj-search.bg-wrap { 
-      max-width: 1400px; 
+      max-width: 1040px; 
       margin: var(--spacing-xl) auto 0;
       padding: 0 var(--spacing-md);
+      font-family: "sj_sans", arial, sans-serif;
     }
     
     .bg-page-title { 
@@ -142,6 +146,14 @@ Github kode:    <!DOCTYPE html>
       font-weight: 800; 
       margin: 0 0 var(--spacing-md);
       line-height: 1.2;
+    }
+
+    .bg-form-shell {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      display: grid;
+      gap: var(--spacing-md);
     }
     
     #bg-sj-search .bg-grid { 
@@ -190,6 +202,11 @@ Github kode:    <!DOCTYPE html>
     #bg-sj-search input:focus-visible {
       outline: 2px solid var(--brand);
       outline-offset: 2px;
+    }
+
+    .bg-date-wrap:focus-within input {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px var(--brand-light);
     }
 
     .bg-field { position: relative; }
@@ -405,10 +422,21 @@ Github kode:    <!DOCTYPE html>
     /* =========================================================
        4) Datumfält + kalenderknapp
        ========================================================= */
-    .bg-dategroup--wide { 
-      grid-column: 1 / -1; 
+    .bg-date-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-md);
     }
-    
+    .bg-date-row.is-return {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    @media (max-width: 720px) {
+      .bg-date-row.is-return {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .bg-date-wrap { 
       position: relative; 
     }
@@ -447,22 +475,33 @@ Github kode:    <!DOCTYPE html>
       box-shadow: 0 0 0 3px var(--brand-light); 
     }
 
+    .bg-cal-btn:hover,
+    .bg-cal-btn:focus-visible,
+    .bg-cal-btn:active {
+      transform: translateY(-50%);
+    }
+
     /* =========================================================
        5) Resenärssektion
        ========================================================= */
     .bg-section { 
-      margin-top: var(--spacing-lg); 
+      margin-top: var(--spacing-md); 
+      display: grid;
+      gap: var(--spacing-sm);
     }
     
     .bg-section-hd { 
       font-weight: 700; 
-      margin-bottom: var(--spacing-xs);
+      margin-bottom: 0;
       color: var(--text-primary);
+      font-size: 1.35rem;
     }
     
     .bg-section-sub { 
       color: var(--text-secondary); 
-      margin-bottom: var(--spacing-sm);
+      margin: 0;
+      font-size: .98rem;
+      line-height: 1.5;
     }
     
     .bg-passengers { 
@@ -473,31 +512,45 @@ Github kode:    <!DOCTYPE html>
     
     @media (min-width: 560px) { 
       .bg-passengers { 
-        grid-template-columns: repeat(2, 1fr); 
+        grid-template-columns: repeat(2, minmax(0,1fr)); 
       } 
     }
     
     .bg-person { 
       display: flex; 
-      align-items: center; 
-      justify-content: space-between; 
+      align-items: center;  
       gap: var(--spacing-md); 
-      padding: var(--spacing-md); 
+      padding: 16px 18px; 
       background: var(--background-white); 
-      border: 1px solid var(--border-light); 
-      border-radius: var(--radius-md); 
-      min-height: 64px;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      border: 1px solid #e3e3e3; 
+      border-radius: 18px; 
+      min-height: 70px;
+      position: relative;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+    }
+    
+    .bg-person::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius: inherit;
+      pointer-events:none;
+      box-shadow:0 0 0 0 transparent;
+      transition: box-shadow var(--transition-fast);
     }
     
     .bg-person:hover {
-      border-color: var(--brand);
-      box-shadow: var(--shadow-sm);
+      border-color: color-mix(in srgb, var(--brand) 30%, #e3e3e3);
+      background: color-mix(in srgb, var(--brand) 6%, #fff);
+    }
+    
+    .bg-person:hover::after{
+      box-shadow:0 10px 18px rgba(0,0,0,0.08);
     }
     
     .bg-person-title { 
       font-weight: 600; 
-      min-width: 100px; 
+      min-width: 120px; 
       display: flex; 
       gap: var(--spacing-sm); 
       align-items: center;
@@ -505,24 +558,29 @@ Github kode:    <!DOCTYPE html>
     }
     
     .bg-ico { 
-      width: 18px; 
-      height: 18px; 
-      display: inline-block;
-      color: var(--text-secondary);
+      width: 36px; 
+      height: 36px; 
+      display: inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--brand) 12%, #f3f3f3);
+      color: var(--brand);
+      flex-shrink:0;
     }
     
     .bg-ico.adult { 
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><circle cx='12' cy='6' r='3'/><path d='M5 22v-5a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v5'/></svg>"); 
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><circle cx='12' cy='6' r='3'/><path d='M5 22v-5a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v5'/></svg>"); 
       background-repeat: no-repeat; 
       background-position: center; 
-      background-size: 18px 18px;
+      background-size: 22px 22px;
     }
     
     .bg-ico.child { 
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><circle cx='12' cy='5' r='3'/><path d='M7 22v-4a5 5 0 0 1 10 0v4'/></svg>"); 
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><circle cx='12' cy='5' r='3'/><path d='M7 22v-4a5 5 0 0 1 10 0v4'/></svg>"); 
       background-repeat: no-repeat; 
       background-position: center; 
-      background-size: 18px 18px;
+      background-size: 22px 22px;
     }
     
     .bg-stepper { 
@@ -533,6 +591,7 @@ Github kode:    <!DOCTYPE html>
       border: 1px solid var(--border-light); 
       border-radius: var(--radius-md); 
       padding: var(--spacing-xs);
+      margin-left: auto;
     }
     
     .bg-step { 
@@ -601,7 +660,7 @@ Github kode:    <!DOCTYPE html>
     .bg-actions { 
       display: flex; 
       justify-content: flex-end; 
-      margin-top: var(--spacing-lg);
+      margin-top: var(--spacing-md);
       gap: var(--spacing-sm);
     }
     
@@ -609,16 +668,17 @@ Github kode:    <!DOCTYPE html>
       background: var(--brand); 
       color: var(--background-white); 
       border: none; 
-      border-radius: var(--radius-lg); 
-      padding: var(--spacing-md) var(--spacing-lg); 
-      font-weight: 800; 
-      font-size: 16px;
+      border-radius: 999px; 
+      padding: 18px var(--spacing-xl); 
+      font-weight: 700; 
+      font-size: 17px;
       cursor: pointer;
       transition: filter var(--transition-fast), transform var(--transition-fast);
-      min-height: 44px;
+      min-height: 52px;
       display: flex;
       align-items: center;
       justify-content: center;
+      letter-spacing: .01em;
     }
     
     .bg-btn:hover { 
@@ -639,16 +699,40 @@ Github kode:    <!DOCTYPE html>
        7) Resultatlager + vänsterkalender
        ========================================================= */
     .bg-results-wrap {
-      display: grid;
-      grid-template-columns: 380px 1fr;
+      display: flex;
+      flex-direction: column;
       gap: var(--spacing-xl);
-      align-items: start;
-      margin-top: var(--spacing-xl);
+      align-items: stretch;
+      margin: var(--spacing-xl) auto 0;
+      width: 100%;
+      max-width: 640px;
+      padding: 0 var(--spacing-md);
     }
     
-    @media (max-width: 1100px) {
-      .bg-results-wrap { 
-        grid-template-columns: 1fr; 
+    .bg-results-wrap > aside,
+    .bg-results-wrap > section {
+      width: 100%;
+    }
+    
+    @media (min-width: 960px) {
+      .bg-results-wrap {
+        max-width: 1040px;
+        display: grid;
+        grid-template-columns: 340px minmax(0, 1fr);
+        gap: var(--spacing-xl);
+        align-items: start;
+        padding: 0;
+      }
+      .bg-results-wrap > h2,
+      .bg-results-wrap > #bg-current-route,
+      .bg-results-wrap > #bg-results-route {
+        grid-column: 1 / -1;
+      }
+      .bg-results-wrap > aside {
+        order: 1;
+      }
+      .bg-results-wrap > section {
+        order: 2;
       }
     }
     
@@ -674,14 +758,22 @@ Github kode:    <!DOCTYPE html>
       background: var(--background-white);
       border: 1px solid var(--border-light);
       border-radius: var(--radius-xl);
-      padding: var(--spacing-md);
+      padding: calc(var(--spacing-md) + 4px);
       box-shadow: var(--shadow-sm);
     }
     
     .bg-calbox--compact { 
-      width: 380px; 
+      width: 100%;
+      max-width: 360px;
       overflow: hidden;
       box-sizing: border-box;
+      margin: 0 auto;
+    }
+    
+    @media (max-width: 959px) {
+      .bg-calbox--compact {
+        max-width: 100%;
+      }
     }
     
     .bg-results {
@@ -737,8 +829,9 @@ Github kode:    <!DOCTYPE html>
     
     .bg-cal-grid { 
       display: grid; 
-      grid-template-columns: repeat(7, 1fr); 
+      grid-template-columns: repeat(7, minmax(48px, 1fr)); 
       gap: var(--spacing-sm);
+      justify-content: center;
       width: 100%;
       max-width: 100%;
       overflow: hidden;
@@ -755,7 +848,9 @@ Github kode:    <!DOCTYPE html>
       position: relative;
       overflow: hidden;
       text-align: center;
-      padding: var(--spacing-md) 0;
+      width: 48px;
+      height: 48px;
+      margin: 0 auto;
       border-radius: 50%;
       border: 2px solid transparent;
       cursor: pointer;
@@ -1041,20 +1136,21 @@ Github kode:    <!DOCTYPE html>
       background: var(--brand); 
       color: var(--background-white); 
       border: none; 
-      border-radius: var(--radius-sm); 
-      padding: var(--spacing-sm) var(--spacing-md); 
-      font-weight: 600; 
-      font-size: 14px; 
+      border-radius: 999px; 
+      padding: 14px var(--spacing-lg); 
+      font-weight: 700; 
+      font-size: 16px; 
       cursor: pointer;
-      transition: background-color var(--transition-fast);
-      min-height: 44px;
+      transition: filter var(--transition-fast), transform var(--transition-fast);
+      min-height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     
     .bg-btn:hover { 
-      background: color-mix(in srgb, var(--brand) 90%, #000);
+      filter: brightness(0.95);
+      transform: translateY(-1px);
     }
     
     .bg-btn:focus-visible {
@@ -1361,13 +1457,20 @@ Github kode:    <!DOCTYPE html>
     /* Login dropdown */
     .bg-login-dropdown{ position:relative }
     .bg-login-btn{
-      display:flex; align-items:center; gap:6px;
-      background:color-mix(in srgb, var(--brand) 90%, #000);
-      color:#fff; border:none; border-radius:8px;
-      padding:8px 12px; font-weight:700; cursor:pointer;
-      transition:background-color 0.2s ease;
+      display:flex; 
+      align-items:center; 
+      gap:6px;
+      background:var(--brand);
+      color:#fff; 
+      border:none; 
+      border-radius:999px;
+      padding:8px 18px; 
+      font-weight:700; 
+      cursor:pointer;
+      transition:filter 0.2s ease, transform 0.2s ease;
+      min-height:38px;
     }
-    .bg-login-btn:hover{ background:color-mix(in srgb, var(--brand) 80%, #000) }
+    .bg-login-btn:hover{ filter:brightness(0.9); transform:translateY(-1px); }
     .bg-login-btn[aria-expanded="true"] svg{ transform:rotate(180deg) }
     .bg-login-btn svg{ transition:transform 0.2s ease }
     
@@ -1511,19 +1614,70 @@ Github kode:    <!DOCTYPE html>
 
     /* Triptype (pills) */
     .bg-triptype{
-      grid-column:1/-1; display:flex; gap:12px; align-items:center; margin:10px 0 6px;
+      grid-column:1/-1;
+      display:flex;
+      flex-wrap:wrap;
+      gap: var(--spacing-sm);
+      align-items:center;
+      margin: 4px 0 var(--spacing-sm);
     }
     .bg-pill{
-      display:inline-flex; align-items:center; gap:8px; padding:8px 12px;
-      border:1px solid #e6e6e6; border-radius:999px; background:#fff; cursor:pointer;
-      font-weight:700; user-select:none;
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap: var(--spacing-sm);
+      padding: 12px 16px 12px 48px;
+      border:1px solid #d9d9d9;
+      border-radius: 20px;
+      background:#fff;
+      cursor:pointer;
+      font-weight:600;
+      color: var(--text-primary);
+      min-width: 160px;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+    }
+    .bg-pill::before{
+      content:"";
+      position:absolute;
+      left:18px;
+      top:50%;
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      border:2px solid #bcbcbc;
+      background:#fff;
+      transform:translateY(-50%);
+      transition: border-color var(--transition-fast), background-color var(--transition-fast);
     }
     .bg-pill input{
-      appearance:none; position:relative; width:18px; height:18px; border-radius:999px; border:2px solid #cfcfcf; outline:none; flex:0 0 18px;
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      opacity:0;
+      margin:0;
+      cursor:pointer;
     }
-    .bg-pill input:checked{ border-color:transparent; background:var(--brand); }
-    .bg-pill input:checked::after{ content:""; position:absolute; inset:3px; border-radius:999px; background:#fff; }
-    .bg-pill:has(input:focus-visible){ box-shadow:0 0 0 3px color-mix(in srgb, var(--brand) 25%, transparent); }
+    .bg-pill span{
+      font-size: 1rem;
+    }
+    .bg-pill:has(input:checked){
+      border-color: color-mix(in srgb, var(--brand) 40%, #ddd);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--brand) 35%, transparent);
+    }
+    .bg-pill:has(input:checked)::before{
+      border-color: var(--brand);
+      background: radial-gradient(circle at center, var(--brand) 45%, transparent 46%);
+    }
+    .bg-pill:has(input:focus-visible){
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 25%, transparent);
+    }
+    @media (max-width: 640px){
+      .bg-pill{
+        min-width: unset;
+        flex:1 1 calc(50% - var(--spacing-sm));
+      }
+    }
 
     /* Samma station-varning */
     .bg-warn{
@@ -1623,6 +1777,10 @@ Github kode:    <!DOCTYPE html>
     #bg-sj-search .bg-result-card.sj .bg-btn,
     #bg-sj-search .bg-trip.sj .bg-btn {
       color: inherit !important;
+    }
+    #bg-sj-search .bg-result-card.sj .bg-btn.js-choose,
+    #bg-sj-search .bg-trip.sj .bg-btn.js-choose {
+      color: #ffffff !important;
     }
   </style>
   <!-- ================================
@@ -1780,10 +1938,11 @@ Github kode:    <!DOCTYPE html>
        SJ-LIK SÖK / BOKA – HUVUDKOMPONENT
        ========================================================= -->
   <div id="bg-sj-search" class="bg-wrap">
-    <h2 class="bg-page-title">Boka din resa</h2>
+    <div class="bg-form-shell">
+      <h2 class="bg-page-title">Boka din resa</h2>
 
-    <!-- Rad 1: Från / Vänd / Till -->
-    <div class="bg-grid">
+      <!-- Rad 1: Från / Vänd / Till -->
+      <div class="bg-grid">
       <!-- Från -->
       <div class="bg-field">
         <label for="bg-from-input" class="bg-label">Från</label>
@@ -1818,103 +1977,106 @@ Github kode:    <!DOCTYPE html>
         <input type="hidden" id="bg-to-lat">
         <input type="hidden" id="bg-to-lon">
       </div>
-    </div>
+      </div>
 
-    <!-- Varning: samma station -->
-    <div id="bg-same-warn" class="bg-warn" hidden>
-      <span aria-hidden="true">⚠️</span> Välj olika stationer för utresa och ankomst
-    </div>
+      <!-- Varning: samma station -->
+      <div id="bg-same-warn" class="bg-warn" hidden>
+        <span aria-hidden="true">⚠️</span> Välj olika stationer för utresa och ankomst
+      </div>
 
-    <!-- Restyp (Enkel / T&R) -->
-    <div class="bg-triptype" role="radiogroup" aria-label="Restyp">
-      <label class="bg-pill">
-        <input type="radio" name="bg-triptype" value="oneway" checked />
-        <span>Enkelresa</span>
-      </label>
-      <label class="bg-pill">
-        <input type="radio" name="bg-triptype" value="return" />
-        <span>Tur och retur</span>
-      </label>
-    </div>
+      <!-- Restyp (Enkel / T&R) -->
+      <div class="bg-triptype" role="radiogroup" aria-label="Restyp">
+        <label class="bg-pill">
+          <input type="radio" name="bg-triptype" value="oneway" checked />
+          <span>Enkelresa</span>
+        </label>
+        <label class="bg-pill">
+          <input type="radio" name="bg-triptype" value="return" />
+          <span>Tur och retur</span>
+        </label>
+      </div>
 
-    <!-- Datum: Utresa -->
-    <div class="bg-dategroup bg-dategroup--wide">
-      <label class="bg-label" for="bg-date-out">Datum för utresa</label>
-      <div class="bg-date-wrap">
-        <input id="bg-date-out" type="text" inputmode="none" placeholder="ÅÅÅÅ-MM-DD" aria-label="Datum för utresa" />
-        <button type="button" class="bg-cal-btn" id="bg-cal-open" aria-label="Öppna kalender">
-          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-            <path d="M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10z" fill="currentColor"/>
-          </svg>
-        </button>
-        <div id="bg-mini-cal" class="bg-calbox bg-calbox--dropdown" hidden>
-          <div class="bg-cal-head">
-            <button class="bg-cal-nav" id="mini-prev" aria-label="Föregående månad">‹</button>
-            <div id="mini-title"></div>
-            <button class="bg-cal-nav" id="mini-next" aria-label="Nästa månad">›</button>
+      <div class="bg-date-row" id="bg-date-row">
+      <!-- Datum: Utresa -->
+      <div class="bg-dategroup">
+        <label class="bg-label" for="bg-date-out">Datum för utresa</label>
+        <div class="bg-date-wrap">
+          <input id="bg-date-out" type="text" inputmode="none" placeholder="ÅÅÅÅ-MM-DD" aria-label="Datum för utresa" />
+          <button type="button" class="bg-cal-btn" id="bg-cal-open" aria-label="Öppna kalender">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path d="M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10z" fill="currentColor"/>
+            </svg>
+          </button>
+          <div id="bg-mini-cal" class="bg-calbox bg-calbox--dropdown" hidden>
+            <div class="bg-cal-head">
+              <button class="bg-cal-nav" id="mini-prev" aria-label="Föregående månad">‹</button>
+              <div id="mini-title"></div>
+              <button class="bg-cal-nav" id="mini-next" aria-label="Nästa månad">›</button>
+            </div>
+            <div class="bg-cal-grid" id="mini-grid" role="grid" aria-label="Kalender"></div>
           </div>
-          <div class="bg-cal-grid" id="mini-grid" role="grid" aria-label="Kalender"></div>
         </div>
       </div>
-    </div>
 
-    <!-- Datum: Retur (göms när enkelresa) -->
-    <div class="bg-dategroup bg-dategroup--wide" id="bg-return-wrap" hidden>
-      <label class="bg-label" for="bg-date-ret">Datum för återresa</label>
-      <div class="bg-date-wrap">
-        <input id="bg-date-ret" type="text" inputmode="none" placeholder="ÅÅÅÅ-MM-DD" aria-label="Datum för retur">
-        <button type="button" class="bg-cal-btn" id="bg-cal-open-ret" aria-label="Öppna kalender (retur)">
-          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-            <path d="M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10z" fill="currentColor"/>
-          </svg>
-        </button>
-        <div id="bg-mini-cal-ret" class="bg-calbox bg-calbox--dropdown" hidden>
-          <div class="bg-cal-head">
-            <button class="bg-cal-nav" id="mini-prev-ret" aria-label="Föregående månad">‹</button>
-            <div id="mini-title-ret"></div>
-            <button class="bg-cal-nav" id="mini-next-ret" aria-label="Nästa månad">›</button>
-          </div>
-          <div class="bg-cal-grid" id="mini-grid-ret" role="grid" aria-label="Kalender för återresa"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Resenärer -->
-    <div class="bg-section">
-      <div class="bg-section-hd">Resenärer</div>
-      <div class="bg-section-sub">Anpassa resenären för att lägga till bland annat djur eller periodkort.</div>
-      <div class="bg-passengers">
-        <div class="bg-person">
-          <div class="bg-person-title"><span class="bg-ico adult"></span>Vuxna</div>
-          <div class="bg-stepper">
-            <button type="button" class="bg-step" data-target="adults" data-delta="-1" aria-label="Minska">−</button>
-            <span id="bg-adults" class="bg-count" aria-live="polite">1</span>
-            <button type="button" class="bg-step" data-target="adults" data-delta="1" aria-label="Öka">+</button>
-          </div>
-        </div>
-        <div class="bg-person">
-          <div class="bg-person-title"><span class="bg-ico child"></span>Barn</div>
-          <div class="bg-stepper">
-            <button type="button" class="bg-step" data-target="children" data-delta="-1" aria-label="Minska">−</button>
-            <span id="bg-children" class="bg-count" aria-live="polite">0</span>
-            <button type="button" class="bg-step" data-target="children" data-delta="1" aria-label="Öka">+</button>
+      <!-- Datum: Retur (göms när enkelresa) -->
+      <div class="bg-dategroup" id="bg-return-wrap" hidden>
+        <label class="bg-label" for="bg-date-ret">Datum för återresa</label>
+        <div class="bg-date-wrap">
+          <input id="bg-date-ret" type="text" inputmode="none" placeholder="ÅÅÅÅ-MM-DD" aria-label="Datum för retur">
+          <button type="button" class="bg-cal-btn" id="bg-cal-open-ret" aria-label="Öppna kalender (retur)">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path d="M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10z" fill="currentColor"/>
+            </svg>
+          </button>
+          <div id="bg-mini-cal-ret" class="bg-calbox bg-calbox--dropdown" hidden>
+            <div class="bg-cal-head">
+              <button class="bg-cal-nav" id="mini-prev-ret" aria-label="Föregående månad">‹</button>
+              <div id="mini-title-ret"></div>
+              <button class="bg-cal-nav" id="mini-next-ret" aria-label="Nästa månad">›</button>
+            </div>
+            <div class="bg-cal-grid" id="mini-grid-ret" role="grid" aria-label="Kalender för återresa"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Kampanj -->
-    <div class="bg-section">
-      <button type="button" class="bg-collapser" id="bg-campaign-toggle">+ Lägg till kampanjkod</button>
-      <div id="bg-campaign-wrap" class="bg-campaign" hidden>
-        <label for="bg-campaign" class="bg-label">Kampanjkod</label>
-        <input id="bg-campaign" type="text" placeholder="Ange kod…">
+      <!-- Resenärer -->
+      <div class="bg-section">
+        <div class="bg-section-hd">Resenärer</div>
+        <div class="bg-section-sub">Anpassa resenären för att lägga till bland annat djur eller periodkort.</div>
+        <div class="bg-passengers">
+          <div class="bg-person">
+            <div class="bg-person-title"><span class="bg-ico adult"></span>Vuxna</div>
+            <div class="bg-stepper">
+              <button type="button" class="bg-step" data-target="adults" data-delta="-1" aria-label="Minska">−</button>
+              <span id="bg-adults" class="bg-count" aria-live="polite">1</span>
+              <button type="button" class="bg-step" data-target="adults" data-delta="1" aria-label="Öka">+</button>
+            </div>
+          </div>
+          <div class="bg-person">
+            <div class="bg-person-title"><span class="bg-ico child"></span>Barn</div>
+            <div class="bg-stepper">
+              <button type="button" class="bg-step" data-target="children" data-delta="-1" aria-label="Minska">−</button>
+              <span id="bg-children" class="bg-count" aria-live="polite">0</span>
+              <button type="button" class="bg-step" data-target="children" data-delta="1" aria-label="Öka">+</button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Sök-knapp -->
-    <div class="bg-actions">
-      <button id="bg-submit-desktop" class="bg-btn" type="button">Sök resa</button>
+      <!-- Kampanj -->
+      <div class="bg-section">
+        <button type="button" class="bg-collapser" id="bg-campaign-toggle">+ Lägg till kampanjkod</button>
+        <div id="bg-campaign-wrap" class="bg-campaign" hidden>
+          <label for="bg-campaign" class="bg-label">Kampanjkod</label>
+          <input id="bg-campaign" type="text" placeholder="Ange kod…">
+        </div>
+      </div>
+
+      <!-- Sök-knapp -->
+      <div class="bg-actions">
+        <button id="bg-submit-desktop" class="bg-btn" type="button">Sök resa</button>
+      </div>
     </div>
 
     <!-- Resultat (kalender + lista) -->
@@ -2394,13 +2556,16 @@ Github kode:    <!DOCTYPE html>
          D) TRIPTYPE (Enkel/T&R)
          ======================================================= */
       const retWrap = document.getElementById('bg-return-wrap');
+      const dateRow = document.getElementById('bg-date-row');
       const triptypeRadios = document.querySelectorAll('input[name="bg-triptype"]');
 
       function setTriptype() {
         if (!retWrap) return;
         if (!triptypeRadios.length) { retWrap.hidden = true; return; }
         const checked = document.querySelector('input[name="bg-triptype"]:checked');
-        retWrap.hidden = !(checked && checked.value === 'return');
+        const isReturn = !!(checked && checked.value === 'return');
+        retWrap.hidden = !isReturn;
+        if (dateRow) dateRow.classList.toggle('is-return', isReturn);
       }
       triptypeRadios.forEach(r => r.addEventListener('change', setTriptype));
       setTriptype();
