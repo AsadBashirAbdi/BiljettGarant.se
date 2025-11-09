@@ -431,21 +431,60 @@
     .bg-date-row.is-return {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+    .bg-date-row:not(.is-return) .bg-dategroup:first-child {
+      grid-column: 1 / -1;
+    }
     @media (max-width: 720px) {
       .bg-date-row.is-return {
         grid-template-columns: 1fr;
       }
     }
 
+    .bg-dategroup {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      background: var(--background-white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-sm) var(--spacing-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .bg-dategroup:focus-within {
+      border-color: color-mix(in srgb, var(--brand) 45%, var(--border-light));
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 18%, transparent);
+    }
+
+    .bg-dategroup .bg-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: none;
+      color: var(--text-secondary);
+    }
+
     .bg-date-wrap { 
       position: relative; 
+      display: flex;
+      align-items: center;
     }
     
     .bg-date-wrap input { 
       width: 100%; 
       height: 56px; 
+      padding: 0 var(--spacing-lg) 0 var(--spacing-md);
       padding-right: 52px;
       min-height: 44px; /* Improved click target */
+      border: none;
+      background: transparent;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .bg-date-wrap input::placeholder {
+      color: var(--text-secondary);
+      font-weight: 500;
     }
     
     .bg-cal-btn {
@@ -758,16 +797,20 @@
       background: var(--background-white);
       border: 1px solid var(--border-light);
       border-radius: var(--radius-xl);
-      padding: calc(var(--spacing-md) + 4px);
-      box-shadow: var(--shadow-sm);
+      padding: var(--spacing-md);
+      box-shadow: var(--shadow-md);
+      width: min(100%, 360px);
+      overflow: hidden;
     }
     
     .bg-calbox--compact { 
-      width: 100%;
-      max-width: 360px;
+      width: min(100%, 360px);
       overflow: hidden;
       box-sizing: border-box;
       margin: 0 auto;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
     }
     
     @media (max-width: 959px) {
@@ -787,86 +830,93 @@
       position: absolute; 
       top: calc(100% + var(--spacing-sm)); 
       left: 0; 
-      width: 330px; 
+      width: min(100%, 320px); 
       z-index: 60;
+      padding: var(--spacing-md);
+      overflow: hidden;
+      box-sizing: border-box;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+      background: var(--background-white);
     }
     
     .bg-cal-head { 
       display: flex; 
       align-items: center; 
       justify-content: space-between; 
-      margin-bottom: var(--spacing-md);
+      margin-bottom: var(--spacing-sm);
     }
     
     #cal-title, 
     #mini-title, 
     #mini-title-ret { 
-      font-weight: 800;
+      font-weight: 700;
       color: var(--text-primary);
+      font-size: 0.95rem;
+      text-transform: capitalize;
     }
     
     .bg-cal-nav { 
-      background: var(--background-light); 
+      background: color-mix(in srgb, var(--brand) 10%, var(--background-white)); 
       border: 1px solid var(--border-light); 
-      border-radius: var(--radius-md); 
-      padding: var(--spacing-sm) var(--spacing-md); 
+      border-radius: 50%; 
+      padding: var(--spacing-xs); 
       cursor: pointer;
-      transition: background-color var(--transition-fast);
-      min-height: 44px;
+      transition: background-color var(--transition-fast), border-color var(--transition-fast);
+      min-height: 34px;
+      width: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
+      color: var(--text-primary);
     }
     
     .bg-cal-nav:hover { 
-      background: #efefef; 
-    }
-    
-    .bg-cal-nav:focus-visible {
-      outline: 2px solid var(--brand);
-      outline-offset: 2px;
+      background: color-mix(in srgb, var(--brand) 20%, var(--background-white)); 
+      border-color: color-mix(in srgb, var(--brand) 35%, var(--border-light));
     }
     
     .bg-cal-grid { 
       display: grid; 
-      grid-template-columns: repeat(7, minmax(48px, 1fr)); 
-      gap: var(--spacing-sm);
+      grid-template-columns: repeat(7, 1fr); 
+      gap: 4px;
       justify-content: center;
       width: 100%;
       max-width: 100%;
-      overflow: visible;
+      padding: 0 var(--spacing-xs) var(--spacing-xs);
     }
     
     .bg-cal-grid .wk { 
-      font-size: 13px; 
+      font-size: 0.75rem; 
       color: var(--text-secondary); 
       text-align: center; 
-      padding: var(--spacing-sm) 0;
+      padding: 0;
+      text-transform: uppercase;
+      font-weight: 600;
     }
     
     .bg-day {
       position: relative;
-      overflow: hidden;
       text-align: center;
-      width: 48px;
-      height: 48px;
-      margin: 0 auto;
-      border-radius: 50%;
-      border: 2px solid transparent;
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 12px;
+      border: 1px solid transparent;
       cursor: pointer;
-      background: var(--background-white);
-      font-size: 15px;
-      min-height: 44px; /* Improved click target */
-      min-width: 44px;
-      display: flex;
+      background: transparent;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: all var(--transition-fast);
+      transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
     }
     
     .bg-day:hover { 
-      background: var(--background-light); 
-      border-color: var(--border-light);
+      background: color-mix(in srgb, var(--brand) 12%, transparent); 
+      border-color: color-mix(in srgb, var(--brand) 25%, transparent);
     }
     
     .bg-day:focus-visible {
@@ -880,16 +930,18 @@
     }
     
     .bg-day.disabled { 
-      color: #bdbdbd; 
+      color: var(--text-muted); 
       cursor: not-allowed;
+      opacity: .45;
     }
     
     .bg-day.disabled::after {
       content: ""; 
       position: absolute; 
-      inset: 0;
-      background: linear-gradient(135deg, transparent 49.2%, var(--brand) 49.7%, var(--brand) 50.3%, transparent 50.8%);
-      opacity: 0.85; 
+      width: 120%;
+      height: 1.5px;
+      background: color-mix(in srgb, var(--brand) 35%, transparent);
+      transform: rotate(-24deg);
       pointer-events: none;
     }
     
@@ -897,11 +949,17 @@
       background: var(--brand);
       color: var(--background-white);
       border-color: var(--brand);
-      font-weight: 800;
+      font-weight: 700;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6);
     }
     
     .bg-day.selected:hover { 
-      filter: brightness(1.05);
+      background: var(--brand);
+    }
+
+    .bg-day.today {
+      border-color: color-mix(in srgb, var(--brand) 40%, transparent);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 12%, transparent);
     }
 
     /* =========================================================
@@ -1408,7 +1466,7 @@
     .bg-dialog .bg-close{ position:absolute; right:10px; top:10px; background:#2a2a2a; color:#fff }
 
     /* =========================================================
-       12) Tidslinje i “Resedetaljer”
+       12) Tidslinje i "Resedetaljer"
        ========================================================= */
     .bg-timeline{ margin-top:10px }
     .bg-rowhead{
@@ -1634,70 +1692,55 @@
     .bg-triptype{
       grid-column:1/-1;
       display:flex;
-      flex-wrap:wrap;
-      gap: var(--spacing-sm);
+      gap: var(--spacing-lg);
       align-items:center;
       margin: 4px 0 var(--spacing-sm);
     }
     .bg-pill{
-      position:relative;
-      display:flex;
+      display:inline-flex;
       align-items:center;
-      gap: var(--spacing-sm);
-      justify-content:center;
-      padding: 12px 16px 12px 48px;
-      border:1px solid #d9d9d9;
-      border-radius: 20px;
-      background:#fff;
-      cursor:pointer;
+      gap: var(--spacing-xs);
       font-weight:600;
       color: var(--text-primary);
-      min-width: 160px;
-      min-height: 52px;
-      flex: 1 1 0;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
-    }
-    .bg-pill::before{
-      content:"";
-      position:absolute;
-      left:18px;
-      top:50%;
-      width:20px;
-      height:20px;
-      border-radius:50%;
-      border:2px solid #bcbcbc;
-      background:#fff;
-      transform:translateY(-50%);
-      transition: border-color var(--transition-fast), background-color var(--transition-fast);
-    }
-    .bg-pill input{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      opacity:0;
-      margin:0;
       cursor:pointer;
     }
-    .bg-pill span{
-      font-size: 1rem;
-      white-space: nowrap;
+    .bg-pill input{
+      appearance:none;
+      width: 22px;
+      height:22px;
+      border:2px solid #bcbcbc;
+      border-radius:50%;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      margin:0;
+      cursor:pointer;
+      transition: border-color var(--transition-fast), background-color var(--transition-fast);
     }
-    .bg-pill:has(input:checked){
-      border-color: color-mix(in srgb, var(--brand) 40%, #ddd);
-      box-shadow: 0 0 0 1px color-mix(in srgb, var(--brand) 35%, transparent);
+    .bg-pill input::after{
+      content:"";
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--brand);
+      transform:scale(0);
+      transition:transform var(--transition-fast);
     }
-    .bg-pill:has(input:checked)::before{
+    .bg-pill input:checked{
       border-color: var(--brand);
-      background: radial-gradient(circle at center, var(--brand) 45%, transparent 46%);
+      background: color-mix(in srgb, var(--brand) 20%, transparent);
     }
-    .bg-pill:has(input:focus-visible){
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 25%, transparent);
+    .bg-pill input:checked::after{
+      transform:scale(1);
+    }
+    .bg-pill input:focus-visible{
+      outline:2px solid color-mix(in srgb, var(--brand) 35%, transparent);
+      outline-offset:2px;
     }
     @media (max-width: 640px){
-      .bg-pill{
-        min-width: unset;
-        flex:1 1 calc(50% - var(--spacing-sm));
+      .bg-triptype{
+        gap: var(--spacing-md);
       }
     }
 
@@ -1818,20 +1861,20 @@
   <!-- =========================================================
        HEADER
        ========================================================= -->
-  <header class="bg-header" role="banner">
-    <div class="bg-header-inner">
-      <a class="bg-logo" href="/" aria-label="BiljettGarant – startsida">
-        <span class="bg-logo-mark">B</span><span class="bg-logo-text">BiljettGarant</span>
-      </a>
+<header class="bg-header" role="banner">
+  <div class="bg-header-inner">
+    <a class="bg-logo" href="/" aria-label="BiljettGarant – startsida">
+      <span class="bg-logo-mark">B</span><span class="bg-logo-text">BiljettGarant</span>
+    </a>
 
-      <nav class="bg-nav" aria-label="Huvudmeny">
-        <button class="bg-nav-btn" type="button" data-menu="resor" aria-controls="menu-resor" aria-expanded="false">Resor</button>
-        <button class="bg-nav-btn" type="button" data-menu="sok" aria-controls="menu-sok" aria-expanded="false">Sök & bevaka</button>
-        <a class="bg-nav-link" href="#bg-checkout">Min resa</a>
-        <a class="bg-nav-link" href="#kundservice">Kundservice</a>
-      </nav>
+    <nav class="bg-nav" aria-label="Huvudmeny">
+      <button class="bg-nav-btn" type="button" data-menu="resor" aria-controls="menu-resor" aria-expanded="false">Resor</button>
+      <button class="bg-nav-btn" type="button" data-menu="sok" aria-controls="menu-sok" aria-expanded="false">Sök & bevaka</button>
+      <a class="bg-nav-link" href="#bg-checkout">Min resa</a>
+      <a class="bg-nav-link" href="#kundservice">Kundservice</a>
+    </nav>
 
-      <div class="bg-right">
+    <div class="bg-right">
         <div class="bg-login-dropdown">
           <button id="bg-login-btn" class="bg-login-btn" type="button" aria-expanded="false" aria-haspopup="true">
             Logga in
@@ -1869,19 +1912,19 @@
             </div>
           </div>
         </div>
-        <button id="bg-burger" class="bg-burger" type="button" aria-label="Öppna meny" aria-expanded="false">
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
-        </button>
-      </div>
+      <button id="bg-burger" class="bg-burger" type="button" aria-label="Öppna meny" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      </button>
     </div>
-  </header>
+  </div>
+</header>
 
   <!-- =========================================================
        MEGAPANELER
        ========================================================= -->
-  <!-- Mega-panel: Resor -->
-  <section id="menu-resor" class="bg-mega" hidden aria-label="Resor panel">
-    <div class="bg-mega-inner">
+<!-- Mega-panel: Resor -->
+<section id="menu-resor" class="bg-mega" hidden aria-label="Resor panel">
+  <div class="bg-mega-inner">
       <div>
         <div class="bg-mega-hd">Snabbsökning</div>
         <div class="bg-chips">
@@ -1893,207 +1936,207 @@
           <button type="button" class="chip quick-route" data-from="Köpenhamn H" data-to="Stockholm C">Köpenhamn → Stockholm</button>
         </div>
       </div>
-      <div>
-        <div class="bg-mega-hd">Tåg</div>
-        <ul class="bg-mega-list">
-          <li><a href="#bg-sj-search">Boka tågresa</a></li>
-          <li><a href="#kundservice">Biljetter (info)</a></li>
-          <li><a href="#kundservice">Så reser du med oss</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="bg-mega-hd">Buss</div>
-        <ul class="bg-mega-list">
-          <li><a href="#">Fjärrbuss</a></li>
-          <li><a href="#">Regional buss</a></li>
-        </ul>
-      </div>
+    <div>
+      <div class="bg-mega-hd">Tåg</div>
+    <ul class="bg-mega-list">
+      <li><a href="#bg-sj-search">Boka tågresa</a></li>
+      <li><a href="#kundservice">Biljetter (info)</a></li>
+      <li><a href="#kundservice">Så reser du med oss</a></li>
+    </ul>
     </div>
-  </section>
+    <div>
+      <div class="bg-mega-hd">Buss</div>
+      <ul class="bg-mega-list">
+        <li><a href="#">Fjärrbuss</a></li>
+        <li><a href="#">Regional buss</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-  <!-- Mega-panel: Sök & bevaka -->
-  <section id="menu-sok" class="bg-mega" hidden aria-label="Sök & bevaka panel">
-    <div class="bg-mega-inner">
-      <div class="bg-search-box">
-        <label for="bg-q" class="bg-search-label">Snabbsök</label>
-        <div class="bg-search-row">
-          <input id="bg-q" type="text" placeholder="T.ex. Göteborg → Malmö" />
-          <button id="bg-q-go" type="button">Sök</button>
-        </div>
+<!-- Mega-panel: Sök & bevaka -->
+<section id="menu-sok" class="bg-mega" hidden aria-label="Sök & bevaka panel">
+  <div class="bg-mega-inner">
+    <div class="bg-search-box">
+      <label for="bg-q" class="bg-search-label">Snabbsök</label>
+      <div class="bg-search-row">
+        <input id="bg-q" type="text" placeholder="T.ex. Göteborg → Malmö" />
+        <button id="bg-q-go" type="button">Sök</button>
+      </div>
 
         <!-- Chips (snabbsök-förslag) -->
-        <div class="bg-chips">
+      <div class="bg-chips">
           <button type="button" class="chip quick-route" data-from="Stockholm C" data-to="Köpenhamn H">Stockholm → Malmö → Köpenhamn</button>
           <button type="button" class="chip quick-route" data-from="Köpenhamn H" data-to="Stockholm C">Köpenhamn → Malmö → Stockholm</button>
           <button type="button" class="chip quick-route" data-from="Stockholm C" data-to="Göteborg C">Stockholm → Göteborg</button>
           <button type="button" class="chip quick-route" data-from="Göteborg C" data-to="Stockholm C">Göteborg → Stockholm</button>
-        </div>
+</div>
 
         <!-- Ytterligare snabbsök-knappar -->
         <button type="button" class="chip quick-route" data-from="Göteborg C" data-to="Malmö C">Göteborg C → Malmö C</button>
         <button type="button" class="chip quick-route" data-from="Malmö C" data-to="Göteborg C">Malmö C → Göteborg C</button>
 
-        <small class="muted">Tips: klicka ett förslag eller skriv din sträcka – vi rullar ner till bokningen.</small>
-      </div>
-
-      <div>
-        <div class="bg-mega-hd">Bevakningar</div>
-        <ul class="bg-mega-list">
-          <li><a href="#">Prisbevakning</a></li>
-          <li><a href="#">Störningsinfo</a></li>
-        </ul>
-      </div>
+      <small class="muted">Tips: klicka ett förslag eller skriv din sträcka – vi rullar ner till bokningen.</small>
     </div>
-  </section>
 
-  <!-- Mobil-drawer -->
-  <aside id="bg-drawer" class="bg-drawer" hidden aria-label="Mobilmeny">
-    <div class="bg-drawer-inner">
-      <a class="bg-drawer-item" href="#" data-menu="resor">Resor</a>
-      <a class="bg-drawer-item" href="#" data-menu="sok">Sök & bevaka</a>
-      <a class="bg-drawer-item" href="#bg-checkout">Min resa</a>
-      <a class="bg-drawer-item" href="#kundservice">Kundservice</a>
+    <div>
+      <div class="bg-mega-hd">Bevakningar</div>
+      <ul class="bg-mega-list">
+        <li><a href="#">Prisbevakning</a></li>
+        <li><a href="#">Störningsinfo</a></li>
+      </ul>
     </div>
-  </aside>
+  </div>
+</section>
+
+<!-- Mobil-drawer -->
+<aside id="bg-drawer" class="bg-drawer" hidden aria-label="Mobilmeny">
+  <div class="bg-drawer-inner">
+    <a class="bg-drawer-item" href="#" data-menu="resor">Resor</a>
+    <a class="bg-drawer-item" href="#" data-menu="sok">Sök & bevaka</a>
+    <a class="bg-drawer-item" href="#bg-checkout">Min resa</a>
+    <a class="bg-drawer-item" href="#kundservice">Kundservice</a>
+  </div>
+</aside>
 
   <!-- =========================================================
        SJ-LIK SÖK / BOKA – HUVUDKOMPONENT
        ========================================================= -->
-  <div id="bg-sj-search" class="bg-wrap">
+<div id="bg-sj-search" class="bg-wrap">
     <div class="bg-form-shell">
-      <h2 class="bg-page-title">Boka din resa</h2>
+  <h2 class="bg-page-title">Boka din resa</h2>
 
       <!-- Rad 1: Från / Vänd / Till -->
-      <div class="bg-grid">
-      <!-- Från -->
-      <div class="bg-field">
-        <label for="bg-from-input" class="bg-label">Från</label>
-        <div class="bg-input-wrap">
-          <input id="bg-from-input" type="text" placeholder="Från: Hållplats, adress eller plats" autocomplete="off"/>
-          <button type="button" class="bg-clear" data-target="bg-from-input" aria-label="Rensa">×</button>
-          <ul id="bg-from-list" class="bg-list" hidden></ul>
-        </div>
-        <input type="hidden" id="bg-from-id">
-        <input type="hidden" id="bg-from-lat">
-        <input type="hidden" id="bg-from-lon">
-      </div>
+<div class="bg-grid">
+  <!-- Från -->
+  <div class="bg-field">
+    <label for="bg-from-input" class="bg-label">Från</label>
+    <div class="bg-input-wrap">
+      <input id="bg-from-input" type="text" placeholder="Från: Hållplats, adress eller plats" autocomplete="off"/>
+      <button type="button" class="bg-clear" data-target="bg-from-input" aria-label="Rensa">×</button>
+      <ul id="bg-from-list" class="bg-list" hidden></ul>
+    </div>
+    <input type="hidden" id="bg-from-id">
+    <input type="hidden" id="bg-from-lat">
+    <input type="hidden" id="bg-from-lon">
+  </div>
 
       <!-- Vänd -->
-      <div class="bg-field" style="align-self:center;display:flex;justify-content:center">
-        <button id="bg-swap" class="bg-swap" type="button" aria-label="Vänd resa">
-          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-            <path d="M7 7h11l-3-3m3 13H7l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
+  <div class="bg-field" style="align-self:center;display:flex;justify-content:center">
+    <button id="bg-swap" class="bg-swap" type="button" aria-label="Vänd resa">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M7 7h11l-3-3m3 13H7l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
 
-      <!-- Till -->
-      <div class="bg-field">
-        <label for="bg-to-input" class="bg-label">Till</label>
-        <div class="bg-input-wrap">
-          <input id="bg-to-input" type="text" placeholder="Till: Hållplats, adress eller plats" autocomplete="off"/>
-          <button type="button" class="bg-clear" data-target="bg-to-input" aria-label="Rensa">×</button>
-          <ul id="bg-to-list" class="bg-list" hidden></ul>
-        </div>
+  <!-- Till -->
+<div class="bg-field">
+  <label for="bg-to-input" class="bg-label">Till</label>
+  <div class="bg-input-wrap">
+    <input id="bg-to-input" type="text" placeholder="Till: Hållplats, adress eller plats" autocomplete="off"/>
+    <button type="button" class="bg-clear" data-target="bg-to-input" aria-label="Rensa">×</button>
+    <ul id="bg-to-list" class="bg-list" hidden></ul>
+  </div>
         <input type="hidden" id="bg-to-id">
         <input type="hidden" id="bg-to-lat">
         <input type="hidden" id="bg-to-lon">
       </div>
-      </div>
+</div>
 
       <!-- Varning: samma station -->
-      <div id="bg-same-warn" class="bg-warn" hidden>
-        <span aria-hidden="true">⚠️</span> Välj olika stationer för utresa och ankomst
-      </div>
+<div id="bg-same-warn" class="bg-warn" hidden>
+  <span aria-hidden="true">⚠️</span> Välj olika stationer för utresa och ankomst
+</div>
 
       <!-- Restyp (Enkel / T&R) -->
-      <div class="bg-triptype" role="radiogroup" aria-label="Restyp">
-        <label class="bg-pill">
+<div class="bg-triptype" role="radiogroup" aria-label="Restyp">
+  <label class="bg-pill">
           <input type="radio" name="bg-triptype" value="oneway" checked />
-          <span>Enkelresa</span>
-        </label>
-        <label class="bg-pill">
+    <span>Enkelresa</span>
+  </label>
+  <label class="bg-pill">
           <input type="radio" name="bg-triptype" value="return" />
-          <span>Tur och retur</span>
-        </label>
-      </div>
+    <span>Tur och retur</span>
+  </label>
+</div>
 
       <div class="bg-date-row" id="bg-date-row">
       <!-- Datum: Utresa -->
       <div class="bg-dategroup">
-        <label class="bg-label" for="bg-date-out">Datum för utresa</label>
-        <div class="bg-date-wrap">
+  <label class="bg-label" for="bg-date-out">Datum för utresa</label>
+  <div class="bg-date-wrap">
           <input id="bg-date-out" type="text" inputmode="none" placeholder="ÅÅÅÅ-MM-DD" aria-label="Datum för utresa" />
-          <button type="button" class="bg-cal-btn" id="bg-cal-open" aria-label="Öppna kalender">
-            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-              <path d="M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10z" fill="currentColor"/>
-            </svg>
-          </button>
-          <div id="bg-mini-cal" class="bg-calbox bg-calbox--dropdown" hidden>
-            <div class="bg-cal-head">
-              <button class="bg-cal-nav" id="mini-prev" aria-label="Föregående månad">‹</button>
-              <div id="mini-title"></div>
-              <button class="bg-cal-nav" id="mini-next" aria-label="Nästa månad">›</button>
-            </div>
-            <div class="bg-cal-grid" id="mini-grid" role="grid" aria-label="Kalender"></div>
-          </div>
-        </div>
+    <button type="button" class="bg-cal-btn" id="bg-cal-open" aria-label="Öppna kalender">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10z" fill="currentColor"/>
+      </svg>
+    </button>
+    <div id="bg-mini-cal" class="bg-calbox bg-calbox--dropdown" hidden>
+      <div class="bg-cal-head">
+        <button class="bg-cal-nav" id="mini-prev" aria-label="Föregående månad">‹</button>
+        <div id="mini-title"></div>
+        <button class="bg-cal-nav" id="mini-next" aria-label="Nästa månad">›</button>
       </div>
+            <div class="bg-cal-grid" id="mini-grid" role="grid" aria-label="Kalender"></div>
+    </div>
+  </div>
+</div>
 
       <!-- Datum: Retur (göms när enkelresa) -->
       <div class="bg-dategroup" id="bg-return-wrap" hidden>
-        <label class="bg-label" for="bg-date-ret">Datum för återresa</label>
-        <div class="bg-date-wrap">
-          <input id="bg-date-ret" type="text" inputmode="none" placeholder="ÅÅÅÅ-MM-DD" aria-label="Datum för retur">
-          <button type="button" class="bg-cal-btn" id="bg-cal-open-ret" aria-label="Öppna kalender (retur)">
-            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-              <path d="M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10z" fill="currentColor"/>
-            </svg>
-          </button>
-          <div id="bg-mini-cal-ret" class="bg-calbox bg-calbox--dropdown" hidden>
-            <div class="bg-cal-head">
-              <button class="bg-cal-nav" id="mini-prev-ret" aria-label="Föregående månad">‹</button>
-              <div id="mini-title-ret"></div>
-              <button class="bg-cal-nav" id="mini-next-ret" aria-label="Nästa månad">›</button>
-            </div>
-            <div class="bg-cal-grid" id="mini-grid-ret" role="grid" aria-label="Kalender för återresa"></div>
-          </div>
-        </div>
+  <label class="bg-label" for="bg-date-ret">Datum för återresa</label>
+  <div class="bg-date-wrap">
+    <input id="bg-date-ret" type="text" inputmode="none" placeholder="ÅÅÅÅ-MM-DD" aria-label="Datum för retur">
+    <button type="button" class="bg-cal-btn" id="bg-cal-open-ret" aria-label="Öppna kalender (retur)">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10z" fill="currentColor"/>
+      </svg>
+    </button>
+    <div id="bg-mini-cal-ret" class="bg-calbox bg-calbox--dropdown" hidden>
+      <div class="bg-cal-head">
+        <button class="bg-cal-nav" id="mini-prev-ret" aria-label="Föregående månad">‹</button>
+        <div id="mini-title-ret"></div>
+        <button class="bg-cal-nav" id="mini-next-ret" aria-label="Nästa månad">›</button>
       </div>
+            <div class="bg-cal-grid" id="mini-grid-ret" role="grid" aria-label="Kalender för återresa"></div>
+    </div>
+  </div>
+</div>
     </div>
 
       <!-- Resenärer -->
-      <div class="bg-section">
-        <div class="bg-section-hd">Resenärer</div>
-        <div class="bg-section-sub">Anpassa resenären för att lägga till bland annat djur eller periodkort.</div>
-        <div class="bg-passengers">
-          <div class="bg-person">
-            <div class="bg-person-title"><span class="bg-ico adult"></span>Vuxna</div>
-            <div class="bg-stepper">
-              <button type="button" class="bg-step" data-target="adults" data-delta="-1" aria-label="Minska">−</button>
-              <span id="bg-adults" class="bg-count" aria-live="polite">1</span>
-              <button type="button" class="bg-step" data-target="adults" data-delta="1" aria-label="Öka">+</button>
-            </div>
-          </div>
-          <div class="bg-person">
-            <div class="bg-person-title"><span class="bg-ico child"></span>Barn</div>
-            <div class="bg-stepper">
-              <button type="button" class="bg-step" data-target="children" data-delta="-1" aria-label="Minska">−</button>
-              <span id="bg-children" class="bg-count" aria-live="polite">0</span>
-              <button type="button" class="bg-step" data-target="children" data-delta="1" aria-label="Öka">+</button>
-            </div>
-          </div>
+  <div class="bg-section">
+    <div class="bg-section-hd">Resenärer</div>
+    <div class="bg-section-sub">Anpassa resenären för att lägga till bland annat djur eller periodkort.</div>
+    <div class="bg-passengers">
+      <div class="bg-person">
+        <div class="bg-person-title"><span class="bg-ico adult"></span>Vuxna</div>
+        <div class="bg-stepper">
+          <button type="button" class="bg-step" data-target="adults" data-delta="-1" aria-label="Minska">−</button>
+          <span id="bg-adults" class="bg-count" aria-live="polite">1</span>
+          <button type="button" class="bg-step" data-target="adults" data-delta="1" aria-label="Öka">+</button>
         </div>
       </div>
+      <div class="bg-person">
+        <div class="bg-person-title"><span class="bg-ico child"></span>Barn</div>
+        <div class="bg-stepper">
+          <button type="button" class="bg-step" data-target="children" data-delta="-1" aria-label="Minska">−</button>
+          <span id="bg-children" class="bg-count" aria-live="polite">0</span>
+          <button type="button" class="bg-step" data-target="children" data-delta="1" aria-label="Öka">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
       <!-- Kampanj -->
-      <div class="bg-section">
-        <button type="button" class="bg-collapser" id="bg-campaign-toggle">+ Lägg till kampanjkod</button>
-        <div id="bg-campaign-wrap" class="bg-campaign" hidden>
-          <label for="bg-campaign" class="bg-label">Kampanjkod</label>
-          <input id="bg-campaign" type="text" placeholder="Ange kod…">
-        </div>
-      </div>
+  <div class="bg-section">
+    <button type="button" class="bg-collapser" id="bg-campaign-toggle">+ Lägg till kampanjkod</button>
+    <div id="bg-campaign-wrap" class="bg-campaign" hidden>
+      <label for="bg-campaign" class="bg-label">Kampanjkod</label>
+      <input id="bg-campaign" type="text" placeholder="Ange kod…">
+    </div>
+  </div>
 
       <!-- Sök-knapp -->
       <div class="bg-actions">
@@ -2102,144 +2145,144 @@
     </div>
 
     <!-- Resultat (kalender + lista) -->
-    <div id="bg-results-wrap" class="bg-results-wrap" hidden>
-      <h2 class="bg-results-title">Välj din resa</h2>
+  <div id="bg-results-wrap" class="bg-results-wrap" hidden>
+    <h2 class="bg-results-title">Välj din resa</h2>
       <div id="bg-current-route" class="bg-current-route" hidden></div>
       <div id="bg-results-route" class="bg-results-route"></div>
-      <aside class="bg-calbox bg-calbox--compact">
-        <div class="bg-cal-head">
-          <button class="bg-cal-nav" id="cal-prev" aria-label="Föregående månad" type="button">‹</button>
-          <div id="cal-title"></div>
-          <button class="bg-cal-nav" id="cal-next" aria-label="Nästa månad" type="button">›</button>
-        </div>
-        <div class="bg-cal-grid" id="cal-grid"></div>
-      </aside>
+    <aside class="bg-calbox bg-calbox--compact">
+      <div class="bg-cal-head">
+        <button class="bg-cal-nav" id="cal-prev" aria-label="Föregående månad" type="button">‹</button>
+        <div id="cal-title"></div>
+        <button class="bg-cal-nav" id="cal-next" aria-label="Nästa månad" type="button">›</button>
+      </div>
+      <div class="bg-cal-grid" id="cal-grid"></div>
+    </aside>
 
       <section id="bg-results" class="bg-results">
         <div class="bg-hint">Hämtar avgångar…</div>
       </section>
-    </div>
+  </div>
 
     <!-- Steg 2: Offert / Klass & Flex -->
-    <div id="bg-offer-panel" class="bg-offer" hidden>
-      <div class="bg-offer-head">
-        <button id="bg-back-offer" class="linklike bg-back" type="button" aria-label="Tillbaka till sök">‹ Sök resa</button>
-        <div>
-          <div class="bg-offer-title">Välj biljettyp</div>
-          <div id="bg-offer-route" class="bg-offer-route"></div>
-          <button id="bg-offer-details" class="linklike" type="button">Resedetaljer</button>
-        </div>
-        <button id="bg-offer-close" class="bg-close" type="button" aria-label="Stäng">×</button>
+  <div id="bg-offer-panel" class="bg-offer" hidden>
+    <div class="bg-offer-head">
+      <button id="bg-back-offer" class="linklike bg-back" type="button" aria-label="Tillbaka till sök">‹ Sök resa</button>
+      <div>
+        <div class="bg-offer-title">Välj biljettyp</div>
+        <div id="bg-offer-route" class="bg-offer-route"></div>
+        <button id="bg-offer-details" class="linklike" type="button">Resedetaljer</button>
       </div>
-
-      <div class="bg-offer-sec">
-        <div class="bg-offer-sub">Reseklass</div>
-        <div id="bg-classes" class="bg-cards"></div>
-        <details class="bg-accordion">
-          <summary>Våra reseklasser</summary>
-          <div class="bg-accordion-body" id="bg-classes-info"></div>
-        </details>
-      </div>
-
-      <div class="bg-offer-sec">
-        <div class="bg-offer-sub">Flexibilitet</div>
-        <div id="bg-flexes" class="bg-cards"></div>
-        <details class="bg-accordion">
-          <summary>Våra flexibiliteter</summary>
-          <div class="bg-accordion-body" id="bg-flex-info">
-            Vi erbjuder tre flexibiliteter: <em>Kan ej ombokas</em>, <em>Kan ombokas</em> och <em>Kan återbetalas</em>. Avgifter kan variera beroende på operatör.
-          </div>
-        </details>
-      </div>
-
-      <div class="bg-offer-foot">
-        <div>
-          <div class="muted">Att betala</div>
-          <div id="bg-offer-price" class="price">–</div>
-        </div>
-        <button id="bg-to-checkout" class="bg-btn" type="button">Fortsätt</button>
-      </div>
+      <button id="bg-offer-close" class="bg-close" type="button" aria-label="Stäng">×</button>
     </div>
+
+    <div class="bg-offer-sec">
+      <div class="bg-offer-sub">Reseklass</div>
+      <div id="bg-classes" class="bg-cards"></div>
+      <details class="bg-accordion">
+        <summary>Våra reseklasser</summary>
+        <div class="bg-accordion-body" id="bg-classes-info"></div>
+      </details>
+    </div>
+
+    <div class="bg-offer-sec">
+      <div class="bg-offer-sub">Flexibilitet</div>
+      <div id="bg-flexes" class="bg-cards"></div>
+      <details class="bg-accordion">
+        <summary>Våra flexibiliteter</summary>
+        <div class="bg-accordion-body" id="bg-flex-info">
+          Vi erbjuder tre flexibiliteter: <em>Kan ej ombokas</em>, <em>Kan ombokas</em> och <em>Kan återbetalas</em>. Avgifter kan variera beroende på operatör.
+        </div>
+      </details>
+    </div>
+
+    <div class="bg-offer-foot">
+      <div>
+        <div class="muted">Att betala</div>
+        <div id="bg-offer-price" class="price">–</div>
+      </div>
+      <button id="bg-to-checkout" class="bg-btn" type="button">Fortsätt</button>
+    </div>
+  </div>
 
     <!-- Steg 3: Checkout -->
-    <div id="bg-checkout" class="bg-checkout" hidden>
-      <h2 class="bg-page-title">Din resa</h2>
-      <div class="bg-checkout-grid">
-        <div class="bg-book-card" id="bg-summary"></div>
-        <div class="bg-pay">
-          <div class="bg-pay-head">
-            <div id="bg-pay-route"></div>
-            <div class="price" id="bg-pay-total"></div>
-          </div>
+  <div id="bg-checkout" class="bg-checkout" hidden>
+    <h2 class="bg-page-title">Din resa</h2>
+    <div class="bg-checkout-grid">
+      <div class="bg-book-card" id="bg-summary"></div>
+      <div class="bg-pay">
+        <div class="bg-pay-head">
+          <div id="bg-pay-route"></div>
+          <div class="price" id="bg-pay-total"></div>
+        </div>
 
-          <div class="bg-form">
-            <div class="bg-row2">
-              <div>
-                <label>Förnamn</label>
-                <input id="bg-fn" type="text" placeholder="Förnamn">
-              </div>
-              <div>
-                <label>Efternamn</label>
-                <input id="bg-ln" type="text" placeholder="Efternamn">
-              </div>
+        <div class="bg-form">
+          <div class="bg-row2">
+            <div>
+              <label>Förnamn</label>
+              <input id="bg-fn" type="text" placeholder="Förnamn">
             </div>
-            <div class="bg-row2">
-              <div>
-                <label>E-postadress</label>
-                <input id="bg-email" type="email" placeholder="namn@mail.se">
-              </div>
-              <div>
-                <label>Mobilnummer</label>
-                <input id="bg-phone" type="tel" placeholder="07X…">
-              </div>
+            <div>
+              <label>Efternamn</label>
+              <input id="bg-ln" type="text" placeholder="Efternamn">
             </div>
           </div>
-
-          <div class="bg-pay-opts">
-            <label class="opt"><input type="radio" name="pay" checked> <span>Swish</span></label>
-            <label class="opt"><input type="radio" name="pay"> <span>Kontokort</span></label>
-            <label class="opt"><input type="radio" name="pay"> <span>Privatfaktura</span></label>
+          <div class="bg-row2">
+            <div>
+              <label>E-postadress</label>
+              <input id="bg-email" type="email" placeholder="namn@mail.se">
+            </div>
+            <div>
+              <label>Mobilnummer</label>
+              <input id="bg-phone" type="tel" placeholder="07X…">
+            </div>
           </div>
+        </div>
 
-          <div class="bg-pay-actions">
-            <button id="bg-price-breakdown" class="linklike" type="button">Prisdetaljer</button>
-            <button class="bg-btn" type="button">Gå till kassan</button>
-          </div>
+        <div class="bg-pay-opts">
+          <label class="opt"><input type="radio" name="pay" checked> <span>Swish</span></label>
+          <label class="opt"><input type="radio" name="pay"> <span>Kontokort</span></label>
+          <label class="opt"><input type="radio" name="pay"> <span>Privatfaktura</span></label>
+        </div>
+
+        <div class="bg-pay-actions">
+          <button id="bg-price-breakdown" class="linklike" type="button">Prisdetaljer</button>
+          <button class="bg-btn" type="button">Gå till kassan</button>
         </div>
       </div>
     </div>
+  </div>
 
     <!-- Modal (endast en gång) -->
-    <div id="bg-modal" class="bg-modal" hidden>
-      <div class="bg-dialog">
-        <button class="bg-close" id="bg-modal-close" type="button" aria-label="Stäng">×</button>
-        <div id="bg-modal-body"></div>
-      </div>
-    </div>
+<div id="bg-modal" class="bg-modal" hidden>
+  <div class="bg-dialog">
+    <button class="bg-close" id="bg-modal-close" type="button" aria-label="Stäng">×</button>
+    <div id="bg-modal-body"></div>
+  </div>
+</div>
 
-    <!-- Kundservice -->
-    <section id="kundservice" class="bg-help" aria-label="Kundservice">
-      <h2 class="bg-page-title">Kundservice</h2>
-      <div class="bg-help-grid">
-        <div class="card">
-          <h3>Kontakta oss</h3>
-          <p>E-post: support@biljettgarant.se<br>Öppet: 08–20 alla dagar</p>
-        </div>
-        <div class="card">
-          <h3>Vanliga frågor</h3>
-          <ul class="faq">
-            <li><a href="#">Hur fungerar prisbevakning?</a></li>
-            <li><a href="#">Kan jag omboka min biljett?</a></li>
-            <li><a href="#">När får jag min biljett?</a></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Biljettbytes-marknad (beta)</h3>
-          <p>Sälj en biljett du inte kan använda (24h/12h/2h kvar). <em>Kommer snart.</em></p>
-          <button class="bg-btn" type="button">Intresseanmälan</button>
-        </div>
-      </div>
-    </section>
+<!-- Kundservice -->
+<section id="kundservice" class="bg-help" aria-label="Kundservice">
+  <h2 class="bg-page-title">Kundservice</h2>
+  <div class="bg-help-grid">
+    <div class="card">
+      <h3>Kontakta oss</h3>
+      <p>E-post: support@biljettgarant.se<br>Öppet: 08–20 alla dagar</p>
+    </div>
+    <div class="card">
+      <h3>Vanliga frågor</h3>
+      <ul class="faq">
+        <li><a href="#">Hur fungerar prisbevakning?</a></li>
+        <li><a href="#">Kan jag omboka min biljett?</a></li>
+        <li><a href="#">När får jag min biljett?</a></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Biljettbytes-marknad (beta)</h3>
+      <p>Sälj en biljett du inte kan använda (24h/12h/2h kvar). <em>Kommer snart.</em></p>
+      <button class="bg-btn" type="button">Intresseanmälan</button>
+    </div>
+  </div>
+</section>
 
   </div> <!-- /#bg-sj-search -->
 
@@ -2946,7 +2989,7 @@
         return ops.map(o => `<span class="bg-chip">${o}</span>`).join('');
       }
 
-      const IMG_SNALL = "data:image/svg+xml,%3csvg%20viewBox='0%200%20154%2035'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cg%20clip-path='url(%23a)'%3e%3cpath%20d='M134.401%206c6.093%200%209.745.532%2017.187%2013.571%201.004%201.76%201.405%203.151%201.412%204.429a1%201%200%200%201%201%201v1a1%201%200%200%201-1%201c-.531%200-1.842.59-2.628%201.106l-.951.624.034.097a6.263%206.263%200%200%200%201.078%201.927l.202.246H138.95a2.502%202.502%200%200%201-4.9%200h-10.1a2.502%202.502%200%200%201-4.9%200H15.95a2.5%202.5%200%200%201-4.9%200H.95a2.5%202.5%200%200%201-4.9%200H-19V6h153.401Z'%20fill='%23E1E1DD'/%3e%3cpath%20d='M131%2011a1%201%200%200%200-1%201v4a1%201%200%200%200%201%201h4a1%201%200%200%200%201-1v-4a1%201%200%200%200-1-1h-4Z'%20fill='url(%23b)'/%3e%3cpath%20d='M113%2012a1%201%200%200%200-1%201v6a1%201%200%200%200%201%201h10a1%201%200%200%201%201-1v-6a1%201%200%200%200-1-1h-10Z'%20fill='url(%23c)'/%3e%3cpath%20d='M94%2013a1%201%200%200%201%201-1h10a1%201%200%200%201%201%201v8a1%201%200%200%201-1%201H95a1%201%200%200%201-1-1v-8Z'%20fill='url(%23d)'/%3e%3cpath%20d='M33%2012a1%201%200%200%200-1%201v8a1%201%200%200%201%201%201h10a1%201%200%200%200%201-1v-8a1%201%200%200%200-1-1H33Z'%20fill='url(%23e)'/%3e%3cpath%20d='M76%2013a1%201%200%200%201%201-1h10a1%201%200%200%201%201%201v6a1%201%200%200%201-1%201H77a1%201%200%200%201-1-1v-6Z'%20fill='url(%23f)'/%3e%3cpath%20d='M15%2012a1%201%200%200%200-1%201v6a1%201%200%200%201%201%201h10a1%201%200%200%200%201-1v-6a1%201%200%200%200-1-1H15Z'%20fill='url(%23g)'/%3e%3cpath%20d='M66%2013a1%201%200%200%201%201-1h4a1%201%200%200%201%201%201v6a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-6Z'%20fill='url(%23h)'/%3e%3cpath%20d='M51%2012a1%201%200%200%200-1%201v6a1%201%200%200%200%201%201h10a1%201%200%200%201%201-1v-6a1%201%200%200%200-1-1H51Z'%20fill='url(%23i)'/%3e%3cpath%20d='M4%2013a1%201%200%200%201%201-1h4a1%201%200%200%201%201%201v6a1%201%200%200%201-1%201H5a1%201%200%200%201-1-1v-6Z'%20fill='url(%23j)'/%3e%3cpath%20d='M-11%2012a1%201%200%200%200-1%201v6a1%201%200%200%200%201%201h10a1%201%200%200%200%201-1v-6a1%201%200%200%200-1-1h-10Z'%20fill='url(%23k)'/%3e%3cpath%20d='M-19%2012v10a1%201%200%200%200%201-1v-8a1%201%200%200%200-1-1Z'%20fill='url(%23l)'/%3e%3cpath%20d='M-23%2027h6a1%201%200%200%200%201-1V10a1%201%200%200%200-1-1h-6v.5h6a.5.5%200%200%201%20.5.5v16a.5.5%200%200%201-.5.5h-6v.5Z'%20fill='%23CDCDC9'/%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M108%2026a1%201%200%200%201-1%201H93a1%201%200%200%201-1-1V10a1%201%200%200%201%201-1h14a1%201%200%200%201%201%201v16ZM99.75%209.5H93a.5.5%200%200%200-.5.5v16a.5.5%200%200%200%20.5.5h6.75v-17Zm.5%2017v-17H107a.5.5%200%200%201%20.5.5v16a.5.5%200%200%201-.5.5h-6.75ZM46%2026a1%201%200%200%201-1%201H31a1%201%200%200%201-1-1V10a1%201%200%200%201%201-1h14a1%201%200%200%201%201%201v16ZM37.75%209.5H31a.5.5%200%200%200-.5.5v16a.5.5%200%200%200%20.5.5h6.75v-17Zm.5%2017v-17H45a.5.5%200%200%201%20.5.5v16a.5.5%200%200%201-.5.5h-6.75Z'%20fill='%23CDCDC9'/%3e%3c/g%3e%3cdefs%3e%3cclipPath%20id='a'%3e%3cpath%20fill='%23fff'%20d='M0%200h154v35H0z'/%3e%3c/clipPath%3e%3c/defs%3e%3c/svg%3e";
+      const IMG_SNALL = "data:image/svg+xml,%3csvg%20viewBox='0%200%20154%2035'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cg%20clip-path='url(%23a)'%3e%3cpath%20d='M134.401%206c6.093%200%209.745.532%2017.187%2013.571%201.004%201.76%201.405%203.151%201.412%204.429a1%201%200%200%201%201%201v1a1%201%200%200%201-1%201c-.531%200-1.842.59-2.628%201.106l-.951.624.034.097a6.263%206.263%200%200%200%201.078%201.927l.202.246H138.95a2.502%202.502%200%200%201-4.9%200h-10.1a2.502%202.502%200%200%201-4.9%200H15.95a2.5%202.5%200%200%201-4.9%200H.95a2.5%202.5%200%200%201-4.9%200H-19V6h153.401Z'%20fill='%23E1E1DD'/%3e%3cpath%20d='M131%2011a1%201%200%200%200-1%201v4a1%201%200%200%200%201%201h4a1%201%200%200%200%201-1v-4a1%201%200%200%200-1-1h-4Z'%20fill='url(%23b)'/%3e%3cpath%20d='M113%2012a1%201%200%200%200-1%201v6a1%201%200%200%200%201%201h10a1%201%200%200%201%201-1v-6a1%201%200%200%200-1-1h-10Z'%20fill='url(%23c)'/%3e%3cpath%20d='M94%2013a1%201%200%200%201%201-1h10a1%201%200%200%201%201%201v8a1%201%200%200%201-1%201H95a1%201%200%200%201-1-1v-8Z'%20fill='url(%23d)'/%3e%3cpath%20d='M33%2012a1%201%200%200%200-1%201v8a1%201%200%200%201%201%201h10a1%201%200%200%200%201-1v-8a1%201%200%200%200-1-1H33Z'%20fill='url(%23e)'/%3e%3cpath%20d='M76%2013a1%201%200%200%201%201-1h10a1%201%200%200%201%201%201v6a1%201%200%200%201-1%201H77a1%201%200%200%201-1-1v-6Z'%20fill='url(%23f)'/%3e%3cpath%20d='M15%2012a1%201%200%200%200-1%201v6a1%201%200%200%201%201%201h10a1%201%200%200%200%201-1v-6a1%201%200%200%200-1-1H15Z'%20fill='url(%23g)'/%3e%3cpath%20d='M66%2013a1%201%200%200%201%201-1h4a1%201%200%200%201%201%201v6a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-6Z'%20fill='url(%23h)'/%3e%3cpath%20d='M51%2012a1%201%200%200%200-1%201v6a1%201%200%200%200%201%201h10a1%201%200%200%200%201-1v-6a1%201%200%200%200-1-1H51Z'%20fill='url(%23i)'/%3e%3cpath%20d='M4%2013a1%201%200%200%201%201-1h4a1%201%200%200%201%201%201v6a1%201%200%200%201-1%201H5a1%201%200%200%201-1-1v-6Z'%20fill='url(%23j)'/%3e%3cpath%20d='M-11%2012a1%201%200%200%200-1%201v6a1%201%200%200%200%201%201h10a1%201%200%200%200%201-1v-6a1%201%200%200%200-1-1h-10Z'%20fill='url(%23k)'/%3e%3cpath%20d='M-19%2012v10a1%201%200%200%200%201-1v-8a1%201%200%200%200-1-1Z'%20fill='url(%23l)'/%3e%3cpath%20d='M-23%2027h6a1%201%200%200%200%201-1V10a1%201%200%200%200-1-1h-6v.5h6a.5.5%200%200%201%20.5.5v16a.5.5%200%200%201-.5.5h-6v.5Z'%20fill='%23CDCDC9'/%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M108%2026a1%201%200%200%201-1%201H93a1%201%200%200%201-1-1V10a1%201%200%200%201%201-1h14a1%201%200%200%201%201%201v16ZM99.75%209.5H93a.5.5%200%200%200-.5.5v16a.5.5%200%200%200%20.5.5h6.75v-17Zm.5%2017v-17H107a.5.5%200%200%201%20.5.5v16a.5.5%200%200%201-.5.5h-6.75ZM46%2026a1%201%200%200%201-1%201H31a1%201%200%200%201-1-1V10a1%201%200%200%201%201-1h14a1%201%200%200%201%201%201v16ZM37.75%209.5H31a.5.5%200%200%200-.5.5v16a.5.5%200%200%200%20.5.5h6.75v-17Zm.5%2017v-17H45a.5.5%200%200%201%20.5.5v16a.5.5%200%200%201-.5.5h-6.75Z'%20fill='%23CDCDC9'/%3e%3c/g%3e%3cdefs%3e%3cclipPath%20id='a'%3e%3cpath%20fill='%23fff'%20d='M0%200h154v35H0z'/%3e%3c/clipPath%3e%3c/defs%3e%3c/svg%3e";
       const IMG_EURON = "https://www.sj.se/assets/images/EuroNight-CYcgT7_i.svg";
       const IMG_SJ_X2 = "https://www.sj.se/assets/images/X2000-BYU9RuFG.svg";
 
@@ -3421,7 +3464,7 @@
               </div>
 
               ${vehicleText ? `<div class="rc-op">${vehicleText}</div>` : ''}
-            </div>
+    </div>
 
             <div class="rc-right">
               ${priceText ? `<div class="rc-price"><small>Fr.</small> ${priceText}</div>` : ''}
@@ -3429,9 +3472,9 @@
             </div>
 
             <div class="bg-trip-actions" style="margin-top:12px">
-              <button class="linklike js-details" type="button">Resedetaljer</button>
-              <button class="bg-btn js-choose" type="button">Välj</button>
-            </div>
+      <button class="linklike js-details" type="button">Resedetaljer</button>
+      <button class="bg-btn js-choose" type="button">Välj</button>
+    </div>
           </article>
         `;
       }
@@ -3457,50 +3500,50 @@
         if (!q) return null;
         try {
           const res = await fetch(SUGGEST_API + encodeURIComponent(q)).then(r => r.ok ? r.json() : []);
-          const list = Array.isArray(res) ? res : [];
-          const score = (n) => {
-            if (!n) return 0;
+    const list = Array.isArray(res) ? res : [];
+    const score = (n) => {
+      if (!n) return 0;
             if (/\b(C|H)\b$/i.test(n)) return 3;
             if (/central(?:station)?|resecentrum/i.test(n)) return 2;
             if (String(n).toLowerCase().startsWith(q.toLowerCase())) return 1;
-            return 0;
-          };
+      return 0;
+    };
           list.sort((a, b) => score(b.name) - score(a.name));
-          return list[0] || null;
+    return list[0] || null;
         } catch (_) { return null; }
       }
 
       function prettyStationName(raw) {
         if (!raw) return '';
-        const map = {
-          'stockholm': 'Stockholm C',
+  const map = {
+    'stockholm': 'Stockholm C',
           'göteborg' : 'Göteborg C',
           'malmö'    : 'Malmö C',
           'uppsala'  : 'Uppsala C',
-          'köpenhamn': 'Köpenhamn H',
-          'københavn': 'Köpenhamn H'
-        };
+    'köpenhamn': 'Köpenhamn H',
+    'københavn': 'Köpenhamn H'
+  };
         const base = String(raw).replace(/\s*\(.*?\)\s*$/, '').trim();
-        const key  = base.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  const key  = base.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
         return map[key] || base;
       }
 
       async function quickSearchByNames(fromName, toName) {
-        try {
-          const from = await resolveStationIdByName(fromName);
-          const to   = await resolveStationIdByName(toName);
+  try {
+    const from = await resolveStationIdByName(fromName);
+    const to   = await resolveStationIdByName(toName);
 
-          if (!from || !to) {
-            resultsWrap.hidden = false;
-            resultsEl.innerHTML = '<div class="bg-hint">Hittade inte stationerna i snabbsökningen. Prova manuellt.</div>';
-            return;
-          }
+    if (!from || !to) {
+      resultsWrap.hidden = false;
+      resultsEl.innerHTML = '<div class="bg-hint">Hittade inte stationerna i snabbsökningen. Prova manuellt.</div>';
+      return;
+    }
 
           // Fyll Från
-          document.getElementById('bg-from-input').value = prettyStationName(from.name || fromName);
-          document.getElementById('bg-from-id').value    = from.id  || '';
-          document.getElementById('bg-from-lat').value   = from.lat || '';
-          document.getElementById('bg-from-lon').value   = from.lon || '';
+    document.getElementById('bg-from-input').value = prettyStationName(from.name || fromName);
+    document.getElementById('bg-from-id').value    = from.id  || '';
+    document.getElementById('bg-from-lat').value   = from.lat || '';
+    document.getElementById('bg-from-lon').value   = from.lon || '';
 
           // Fyll Till
           document.getElementById('bg-to-input').value = prettyStationName(to.name || toName);
@@ -3508,36 +3551,36 @@
           document.getElementById('bg-to-lat').value   = to.lat || '';
           document.getElementById('bg-to-lon').value   = to.lon || '';
 
-          const outInput = document.getElementById('bg-date-out');
-          if (!outInput.value) outInput.value = todayStr;
+    const outInput = document.getElementById('bg-date-out');
+    if (!outInput.value) outInput.value = todayStr;
           if (!validateDifferentStations()) return;
 
-          await doSearch(outInput.value || todayStr);
+    await doSearch(outInput.value || todayStr);
 
-        } catch (err) {
-          resultsWrap.hidden = false;
-          resultsEl.innerHTML = '<div class="bg-hint">Kunde inte utföra snabbsök just nu.</div>';
-        }
-      }
-      window.quickSearchByNames = quickSearchByNames;
+  } catch (err) {
+    resultsWrap.hidden = false;
+    resultsEl.innerHTML = '<div class="bg-hint">Kunde inte utföra snabbsök just nu.</div>';
+  }
+}
+window.quickSearchByNames = quickSearchByNames;
 
       document.querySelectorAll('[data-from][data-to], .chip, .quick-route').forEach(btn => {
         btn.addEventListener('click', async (e) => {
-          let fromName = btn.getAttribute('data-from');
-          let toName   = btn.getAttribute('data-to');
+    let fromName = btn.getAttribute('data-from');
+    let toName   = btn.getAttribute('data-to');
 
           if (!fromName || !toName) {
             const txt = (btn.textContent || '').replace(/\s+/g, ' ').trim();
-            const m = txt.match(/(.+?)\s*[→\-–—]\s*(.+)/);
+      const m = txt.match(/(.+?)\s*[→\-–—]\s*(.+)/);
             if (m) { fromName = m[1]; toName = m[2]; }
-          }
+    }
 
           if (fromName && toName) {
-            e.preventDefault();
-            await quickSearchByNames(fromName, toName);
-          }
-        });
-      });
+      e.preventDefault();
+      await quickSearchByNames(fromName, toName);
+    }
+  });
+});
 
       /* =======================================================
          M) SÖK
@@ -3701,8 +3744,8 @@
         if (p) return Math.round(p);
         const mins = (typeof t.durationMin === 'number') ? t.durationMin : 120;
         const seed = 0.9 * mins;
-        return Math.max(95, Math.round(seed));
-      }
+    return Math.max(95, Math.round(seed));
+  }
 
       function openOffer(t) {
         selectedTrip = t; selClass = null; selFlex = null;
@@ -3714,71 +3757,71 @@
         const from = t.from || (t.legs?.[0]?.from || '');
         const to = t.to || (t.legs?.[t.legs?.length - 1]?.to || '');
         offerRoute.textContent = `${shortC(from)} → ${shortC(to)} • ${dateLine} ${depT}–${arrT}`;
-        computedBase = basePriceFromTrip(t);
+  computedBase = basePriceFromTrip(t);
 
-        const legs = t.legs || [];
+  const legs = t.legs || [];
         const hasSJFast = legs.some(L => /SJ\s*Snabbtåg|X\s*2000/i.test(firstNonBlank(L.name, L.category, '')));
 
-        const classDefs = hasSJFast ? [
+  const classDefs = hasSJFast ? [
           { id: '2',  name: '2 klass',       add: 0,   info: 'Wifi ombord. Bästa pris.' },
           { id: '2l', name: '2 klass Lugn',  add: 180, info: 'Lugn zon, mobiler på ljudlöst.' },
           { id: '1',  name: '1 klass',       add: 380, info: 'Breda säten, extra benutrymme. Kaffe/frukt.' }
         ] : [
           { id: 'best', name:'Standard', add:0, info:'Bäst tillgänglig reseklass för vald operatör.' }
-        ];
+  ];
 
-        classesBox.innerHTML = classDefs.map((c,i)=>`
-          <label class="bg-card">
-            <div class="left">
-              <input class="bg-radio2 js-class" type="radio" name="class" value="${c.id}" ${i===0?'checked':''}>
-              <div>
-                <div><strong>${c.name}</strong></div>
-                <div class="muted">${c.info}</div>
-              </div>
-            </div>
-            <div class="price">${formatPrice(computedBase + c.add)}</div>
-          </label>
-        `).join('');
-        classesInfo.textContent = 'Reseklass och bekvämligheter varierar mellan avgångar.';
+  classesBox.innerHTML = classDefs.map((c,i)=>`
+    <label class="bg-card">
+      <div class="left">
+        <input class="bg-radio2 js-class" type="radio" name="class" value="${c.id}" ${i===0?'checked':''}>
+        <div>
+          <div><strong>${c.name}</strong></div>
+          <div class="muted">${c.info}</div>
+        </div>
+      </div>
+      <div class="price">${formatPrice(computedBase + c.add)}</div>
+    </label>
+  `).join('');
+  classesInfo.textContent = 'Reseklass och bekvämligheter varierar mellan avgångar.';
 
-        selClass = classDefs[0];
+  selClass = classDefs[0];
 
-        const flexDefs = [
+  const flexDefs = [
           { id:'nochange',   name:'Kan ej ombokas',    mul:1.00, info:'Ej ombokningsbar. Tillval återbetalas om du avbokar före avgång.' },
           { id:'change',     name:'Kan ombokas',       mul:1.14, info:'Ombokningsbar till avgång. Avgift normalt 4–7%.' },
           { id:'refundable', name:'Kan återbetalas',   mul:1.24, info:'Återbetalningsbar till avgång. Avgift normalt 4–7%.' },
-        ];
-        flexBox.innerHTML = flexDefs.map((f,i)=>`
-          <label class="bg-card">
-            <div class="left">
-              <input class="bg-radio2 js-flex" type="radio" name="flex" value="${f.id}" ${i===0?'checked':''}>
-              <div>
-                <div><strong>${f.name}</strong></div>
-                <div class="muted">${f.info}</div>
-              </div>
-            </div>
-            <div class="price">${formatPrice(Math.round((computedBase + (selClass?selClass.add:0))*f.mul))}</div>
-          </label>
-        `).join('');
-        selFlex = flexDefs[0];
+  ];
+  flexBox.innerHTML = flexDefs.map((f,i)=>`
+    <label class="bg-card">
+      <div class="left">
+        <input class="bg-radio2 js-flex" type="radio" name="flex" value="${f.id}" ${i===0?'checked':''}>
+        <div>
+          <div><strong>${f.name}</strong></div>
+          <div class="muted">${f.info}</div>
+        </div>
+      </div>
+      <div class="price">${formatPrice(Math.round((computedBase + (selClass?selClass.add:0))*f.mul))}</div>
+    </label>
+  `).join('');
+  selFlex = flexDefs[0];
 
-        classesBox.querySelectorAll('.js-class').forEach((r,i)=>{
-          r.addEventListener('change', ()=>{
-            selClass = classDefs[i];
-            flexBox.querySelectorAll('.bg-card .price').forEach((el,idx)=>{
-              const f = flexDefs[idx];
-              el.textContent = formatPrice(Math.round((computedBase + selClass.add)*f.mul));
-            });
-            updateOfferPrice();
-          });
-        });
-        flexBox.querySelectorAll('.js-flex').forEach((r,i)=>{
-          r.addEventListener('change', ()=>{ selFlex = flexDefs[i]; updateOfferPrice(); });
-        });
+  classesBox.querySelectorAll('.js-class').forEach((r,i)=>{
+    r.addEventListener('change', ()=>{
+      selClass = classDefs[i];
+      flexBox.querySelectorAll('.bg-card .price').forEach((el,idx)=>{
+        const f = flexDefs[idx];
+        el.textContent = formatPrice(Math.round((computedBase + selClass.add)*f.mul));
+      });
+      updateOfferPrice();
+    });
+  });
+  flexBox.querySelectorAll('.js-flex').forEach((r,i)=>{
+    r.addEventListener('change', ()=>{ selFlex = flexDefs[i]; updateOfferPrice(); });
+  });
 
         document.getElementById('bg-offer-details').onclick = ()=> openDetails(t);
 
-        updateOfferPrice();
+  updateOfferPrice();
         offerEl.hidden = false;
         offerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
@@ -3786,14 +3829,14 @@
       function updateOfferPrice() {
         if (!selClass || !selFlex) { offerPrice.textContent = '–'; return; }
         const total = Math.round((computedBase + selClass.add) * selFlex.mul) * Math.max(1, adults) + Math.round((computedBase * 0.5)) * children;
-        offerPrice.textContent = formatPrice(total);
-      }
+    offerPrice.textContent = formatPrice(total);
+  }
       document.getElementById('bg-offer-close')?.addEventListener('click', () => offerEl.hidden = true);
 
-      document.getElementById('bg-back-offer')?.addEventListener('click', ()=>{
-        document.getElementById('bg-offer-panel').hidden = true;
-        document.getElementById('bg-results').scrollIntoView({behavior:'smooth', block:'start'});
-      });
+  document.getElementById('bg-back-offer')?.addEventListener('click', ()=>{
+    document.getElementById('bg-offer-panel').hidden = true;
+    document.getElementById('bg-results').scrollIntoView({behavior:'smooth', block:'start'});
+  });
 
       /* =======================================================
          O) RESEDETALJER – MODAL
@@ -3803,9 +3846,9 @@
       document.getElementById('bg-modal-close')?.addEventListener('click', () => modal.hidden = true);
 
       function openDetails(t) {
-        const fmtTime = s => {
+  const fmtTime = s => {
           if (!s) return '';
-          const p = String(s).trim().split(' ');
+    const p = String(s).trim().split(' ');
           const t0 = (p.length > 1 ? p[1] : p[0]) || '';
           return t0.slice(0, 5);
         };
@@ -3874,7 +3917,7 @@
           return t0.slice(0, 5);
         };
 
-        const trainSVG = `<svg aria-hidden="true" width="88" height="16" viewBox="0 0 88 16"><rect x="2" y="5" width="72" height="6" rx="3" fill="#9a9a9a"/></svg>`;
+  const trainSVG = `<svg aria-hidden="true" width="88" height="16" viewBox="0 0 88 16"><rect x="2" y="5" width="72" height="6" rx="3" fill="#9a9a9a"/></svg>`;
         let rows = '';
 
         rows += `
@@ -3990,16 +4033,16 @@
         };
 
         const trainSVG = `<svg aria-hidden="true" width="88" height="16" viewBox="0 0 88 16"><rect x="2" y="5" width="72" height="6" rx="3" fill="#9a9a9a"/></svg>`;
-        let rows = '';
+  let rows = '';
 
-        rows += `
-          <div class="bg-legrow first">
-            <div class="bg-rail"><span class="bg-dot endpoint"></span></div>
-            <div class="col-time"></div>
-            <div class="col-time">${depTrip}</div>
+  rows += `
+    <div class="bg-legrow first">
+      <div class="bg-rail"><span class="bg-dot endpoint"></span></div>
+      <div class="col-time"></div>
+      <div class="col-time">${depTrip}</div>
             <div class="col-station"><div class="station-line"><strong>${shortC(from)}</strong></div></div>
-          </div>
-        `;
+    </div>
+  `;
 
         const addStops = () => {
           legs.forEach((L, li) => {
@@ -4019,146 +4062,146 @@
               }
             }
 
-            rows += `
-              <div class="bg-legrow" style="padding-top:6px;padding-bottom:0">
-                <div class="bg-rail"><span class="bg-dot small" style="top:8px"></span></div>
-                <div class="col-time"></div>
-                <div class="col-time"></div>
-                <div class="col-station">
+    rows += `
+      <div class="bg-legrow" style="padding-top:6px;padding-bottom:0">
+        <div class="bg-rail"><span class="bg-dot small" style="top:8px"></span></div>
+        <div class="col-time"></div>
+        <div class="col-time"></div>
+        <div class="col-station">
                   <div class="trainline">${trainSVG}<span>${label || 'Linje'}</span>${legIconHtml}</div>
-                </div>
-              </div>
-            `;
+        </div>
+      </div>
+    `;
 
             if (stops.length) {
-              const MAX_SHOW = 12;
-              const midStops = stops.slice(1, -1);
-              const needFold = midStops.length > MAX_SHOW;
+      const MAX_SHOW = 12;
+      const midStops = stops.slice(1, -1);
+      const needFold = midStops.length > MAX_SHOW;
 
-              const S0 = stops[0];
+      const S0 = stops[0];
               const s0Arr = fmtTime(firstNonBlank(S0?.rtArr, S0?.arr));
               const s0Dep = fmtTime(firstNonBlank(S0?.rtDep, S0?.dep)) || depL;
               const s0Plat= firstNonBlank(S0?.platform, S0?.rtTrack, S0?.track, '');
-              rows += `
-                <div class="bg-legrow">
-                  <div class="bg-rail"><span class="bg-dot"></span></div>
+      rows += `
+        <div class="bg-legrow">
+          <div class="bg-rail"><span class="bg-dot"></span></div>
                   <div class="col-time">${s0Arr || ''}</div>
                   <div class="col-time">${s0Dep || ''}</div>
-                  <div class="col-station">
+          <div class="col-station">
                     <div class="station-line"><strong>${shortC(S0?.name || S0?.station || L.from)}</strong> ${s0Dep || s0Arr || ''}</div>
                     ${s0Plat ? `<div class="muted">Spår ${s0Plat}</div>` : ''}
-                  </div>
-                </div>
-              `;
+          </div>
+        </div>
+      `;
 
-              const foldId = `midstops-${li}-${Date.now()}`;
-              const midsToShow = needFold ? midStops.slice(0, MAX_SHOW) : midStops;
-              const midsHidden = needFold ? midStops.slice(MAX_SHOW) : [];
+      const foldId = `midstops-${li}-${Date.now()}`;
+      const midsToShow = needFold ? midStops.slice(0, MAX_SHOW) : midStops;
+      const midsHidden = needFold ? midStops.slice(MAX_SHOW) : [];
 
               const renderStop = (S, isLast=false) => {
                 const a = fmtTime(firstNonBlank(S?.rtArr, S?.arr));
                 const d = fmtTime(firstNonBlank(S?.rtDep, S?.dep));
                 const p = firstNonBlank(S?.platform, S?.rtTrack, S?.track, '');
-                return `
+        return `
                   <div class="bg-legrow ${isLast ? 'last' : ''}">
-                    <div class="bg-rail"><span class="bg-dot small"></span></div>
+            <div class="bg-rail"><span class="bg-dot small"></span></div>
                     <div class="col-time">${a || ''}</div>
                     <div class="col-time">${d || ''}</div>
-                    <div class="col-station">
+            <div class="col-station">
                       <div class="station-line"><strong>${shortC(S?.name || S?.station || '')}</strong> ${d || a || ''}</div>
                       ${p ? `<div class="muted">Spår ${p}</div>` : ''}
-                    </div>
-                  </div>
-                `;
-              };
+            </div>
+          </div>
+        `;
+      };
 
               midsToShow.forEach(S => { rows += renderStop(S); });
 
               if (needFold) {
-                rows += `<div id="${foldId}" class="bg-stop-wrap" hidden>`;
+        rows += `<div id="${foldId}" class="bg-stop-wrap" hidden>`;
                 midsHidden.forEach(S => { rows += renderStop(S); });
-                rows += `</div>
-                  <div class="bg-legrow" style="padding:4px 0 12px 0">
-                    <div class="bg-rail"><span class="bg-dot small" style="opacity:0"></span></div>
-                    <div class="col-time"></div><div class="col-time"></div>
-                    <div class="col-station">
-                      <button type="button" class="bg-stop-expander" data-target="${foldId}" aria-expanded="false">+ Se mellanliggande hållplatser</button>
-                    </div>
-                  </div>`;
-              }
+        rows += `</div>
+          <div class="bg-legrow" style="padding:4px 0 12px 0">
+            <div class="bg-rail"><span class="bg-dot small" style="opacity:0"></span></div>
+            <div class="col-time"></div><div class="col-time"></div>
+            <div class="col-station">
+              <button type="button" class="bg-stop-expander" data-target="${foldId}" aria-expanded="false">+ Se mellanliggande hållplatser</button>
+            </div>
+          </div>`;
+      }
 
               const SL = stops[stops.length - 1];
               const slArr = fmtTime(firstNonBlank(SL?.rtArr, SL?.arr)) || arrL;
               const slDep = fmtTime(firstNonBlank(SL?.rtDep, SL?.dep));
               const slPlat= firstNonBlank(SL?.platform, SL?.rtTrack, SL?.track, '');
-              rows += `
+      rows += `
                 <div class="bg-legrow ${li === legs.length - 1 ? 'last' : ''}">
-                  <div class="bg-rail"><span class="bg-dot"></span></div>
+          <div class="bg-rail"><span class="bg-dot"></span></div>
                   <div class="col-time">${slArr || ''}</div>
                   <div class="col-time">${slDep || ''}</div>
-                  <div class="col-station">
+          <div class="col-station">
                     <div class="station-line"><strong>${shortC(SL?.name || SL?.station || L.to)}</strong> ${slArr || slDep || ''}</div>
                     ${slPlat ? `<div class="muted">Spår ${slPlat}</div>` : ''}
-                  </div>
-                </div>
-              `;
+          </div>
+        </div>
+      `;
             } else {
-              rows += `
-                <div class="bg-legrow">
-                  <div class="bg-rail"><span class="bg-dot"></span></div>
-                  <div class="col-time"></div>
-                  <div class="col-time">${depL}</div>
-                  <div class="col-station"><div class="station-line"><strong>${shortC(L.from)}</strong></div></div>
-                </div>
+      rows += `
+        <div class="bg-legrow">
+          <div class="bg-rail"><span class="bg-dot"></span></div>
+          <div class="col-time"></div>
+          <div class="col-time">${depL}</div>
+          <div class="col-station"><div class="station-line"><strong>${shortC(L.from)}</strong></div></div>
+        </div>
                 <div class="bg-legrow ${li === legs.length - 1 ? 'last' : ''}">
-                  <div class="bg-rail"><span class="bg-dot"></span></div>
-                  <div class="col-time">${arrL}</div>
-                  <div class="col-time"></div>
-                  <div class="col-station"><div class="station-line"><strong>${shortC(L.to)}</strong></div></div>
-                </div>
-              `;
-            }
-          });
+          <div class="bg-rail"><span class="bg-dot"></span></div>
+          <div class="col-time">${arrL}</div>
+          <div class="col-time"></div>
+          <div class="col-station"><div class="station-line"><strong>${shortC(L.to)}</strong></div></div>
+        </div>
+      `;
+    }
+  });
         };
         addStops();
 
-        rows += `
-          <div class="bg-legrow last">
-            <div class="bg-rail"><span class="bg-dot endpoint"></span></div>
-            <div class="col-time">${arrTrip}</div>
-            <div class="col-time"></div>
+  rows += `
+    <div class="bg-legrow last">
+      <div class="bg-rail"><span class="bg-dot endpoint"></span></div>
+      <div class="col-time">${arrTrip}</div>
+      <div class="col-time"></div>
             <div class="col-station"><div class="station-line"><strong>${shortC(to)}</strong></div></div>
-          </div>
-        `;
+    </div>
+  `;
 
         const changeLabel = plural(changes, 'byte', 'byten');
-        modalBody.innerHTML = `
-          <div style="font-size:24px;font-weight:800;margin-bottom:8px">Resedetaljer</div>
+  modalBody.innerHTML = `
+    <div style="font-size:24px;font-weight:800;margin-bottom:8px">Resedetaljer</div>
           <div class="muted">${shortC(from)} → ${shortC(to)}</div>
-          <div style="margin:6px 0 2px 0">Idag ${date0} kl ${depTrip}–${arrTrip}</div>
+    <div style="margin:6px 0 2px 0">Idag ${date0} kl ${depTrip}–${arrTrip}</div>
           <div style="margin:0 0 10px 0">
             ${dmin != null ? `Restid ${durClock}, ${changes} ${changeLabel}` : `${changes} ${changeLabel}`}
           </div>
           ${dmin!=null ? `<div class="muted" style="margin:0 0 12px 0">Restid ${durHH} timmar och ${String(durMM).padStart(2,'0')} minuter, ${changes} ${changeLabel}</div>` : ''}
 
-          <div class="bg-timeline">
-            <div class="bg-rowhead"><div></div><div>Ank.</div><div>Avg.</div><div>Station</div></div>
-            ${rows}
-          </div>
-        `;
+    <div class="bg-timeline">
+      <div class="bg-rowhead"><div></div><div>Ank.</div><div>Avg.</div><div>Station</div></div>
+      ${rows}
+    </div>
+  `;
         modal.hidden = false;
 
         modalBody.querySelectorAll('.bg-stop-expander').forEach(btn => {
           btn.addEventListener('click', () => {
-            const id = btn.getAttribute('data-target');
-            const box = document.getElementById(id);
-            const open = box.hasAttribute('hidden');
+      const id = btn.getAttribute('data-target');
+      const box = document.getElementById(id);
+      const open = box.hasAttribute('hidden');
             if (open) box.removeAttribute('hidden'); else box.setAttribute('hidden', '');
-            btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-expanded', String(open));
             btn.textContent = (open ? '− Dölj' : '+ Se') + ' mellanliggande hållplatser';
-          });
-        });
-      }
+    });
+  });
+}
 
       /* =======================================================
          P) CHECKOUT
@@ -4173,17 +4216,17 @@
         const depT = toTime(firstNonBlank(selectedTrip.depRT, selectedTrip.dep)),
               arrT = toTime(firstNonBlank(selectedTrip.arrRT, selectedTrip.arr)),
               dateLine = firstNonBlank(toDate(selectedTrip.depRT || selectedTrip.dep), '');
-        const total = offerPrice.textContent;
+    const total = offerPrice.textContent;
 
-        summary.innerHTML = `
-          <div class="kv"><div><strong>Sträcka</strong></div><div>${shortC(selectedTrip.from)} → ${shortC(selectedTrip.to)}</div></div>
-          <div class="kv"><div><strong>Datum & tid</strong></div><div>${dateLine} • ${depT}–${arrT}</div></div>
+    summary.innerHTML = `
+      <div class="kv"><div><strong>Sträcka</strong></div><div>${shortC(selectedTrip.from)} → ${shortC(selectedTrip.to)}</div></div>
+      <div class="kv"><div><strong>Datum & tid</strong></div><div>${dateLine} • ${depT}–${arrT}</div></div>
           <div class="kv"><div><strong>Resenärer</strong></div><div>${adults} vuxen/vuxna${children ? `, ${children} barn` : ''}</div></div>
           <div class="kv"><div><strong>Reseklass</strong></div><div>${selClass.name || 'Standard'}</div></div>
-          <div class="kv"><div><strong>Flex</strong></div><div>${selFlex.name}</div></div>
-        `;
-        payRoute.textContent = `${shortC(selectedTrip.from)} → ${shortC(selectedTrip.to)}`;
-        payTotal.textContent = total;
+      <div class="kv"><div><strong>Flex</strong></div><div>${selFlex.name}</div></div>
+    `;
+    payRoute.textContent = `${shortC(selectedTrip.from)} → ${shortC(selectedTrip.to)}`;
+    payTotal.textContent = total;
 
         checkoutEl.hidden = false;
         checkoutEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -4192,59 +4235,59 @@
       document.getElementById('bg-price-breakdown')?.addEventListener('click', () => {
         if (!selectedTrip || !selClass || !selFlex) return;
         const base = computedBase + (selClass.add || 0);
-        const unit = Math.round(base * selFlex.mul);
+    const unit = Math.round(base * selFlex.mul);
         const total = unit * adults + Math.round(base * 0.5) * children;
-        modalBody.innerHTML = `
-          <div style="font-size:24px;font-weight:800;margin-bottom:8px">Prisdetaljer</div>
-          <div class="kv"><div>Vuxen</div><div>${adults} × ${formatPrice(unit)}</div></div>
-          <div class="kv"><div>Barn (50%)</div><div>${children} × ${formatPrice(Math.round(base*0.5))}</div></div>
-          <div class="kv"><div><strong>Att betala</strong></div><div class="price">${formatPrice(total)}</div></div>
-        `;
+    modalBody.innerHTML = `
+      <div style="font-size:24px;font-weight:800;margin-bottom:8px">Prisdetaljer</div>
+      <div class="kv"><div>Vuxen</div><div>${adults} × ${formatPrice(unit)}</div></div>
+      <div class="kv"><div>Barn (50%)</div><div>${children} × ${formatPrice(Math.round(base*0.5))}</div></div>
+      <div class="kv"><div><strong>Att betala</strong></div><div class="price">${formatPrice(total)}</div></div>
+    `;
         modal.hidden = false;
       });
 
       /* =======================================================
          Q) HEADER / MENY / DRAWER / ANKAR
          ======================================================= */
-      window.addEventListener('DOMContentLoaded', () => {
-        const header = document.querySelector('.bg-header');
+window.addEventListener('DOMContentLoaded', () => {
+  const header = document.querySelector('.bg-header');
         window.addEventListener('scroll', () => header && header.classList.toggle('scrolled', window.scrollY > 2));
 
         function setHeaderHeight() {
-          if (!header) return;
-          document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
-        }
-        setHeaderHeight();
-        window.addEventListener('resize', setHeaderHeight);
-        if ('ResizeObserver' in window && header) new ResizeObserver(setHeaderHeight).observe(header);
+    if (!header) return;
+    document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+  }
+  setHeaderHeight();
+  window.addEventListener('resize', setHeaderHeight);
+  if ('ResizeObserver' in window && header) new ResizeObserver(setHeaderHeight).observe(header);
 
-        const buttons = document.querySelectorAll('.bg-nav-btn');
-        const panels  = { resor: document.getElementById('menu-resor'), sok: document.getElementById('menu-sok') };
-        let openKey = null;
+  const buttons = document.querySelectorAll('.bg-nav-btn');
+  const panels  = { resor: document.getElementById('menu-resor'), sok: document.getElementById('menu-sok') };
+  let openKey = null;
 
         function closeAll() {
           Object.values(panels).forEach(p => p && (p.hidden = true));
           buttons.forEach(b => b.setAttribute('aria-expanded', 'false'));
-          openKey = null;
-          document.documentElement.classList.remove('mega-open');
-          document.documentElement.style.removeProperty('--mega-h');
-        }
+    openKey = null;
+    document.documentElement.classList.remove('mega-open');
+    document.documentElement.style.removeProperty('--mega-h');
+  }
         function openMenu(key) {
-          closeAll();
+    closeAll();
           const btn = [...buttons].find(b => b.dataset.menu === key);
-          const panel = panels[key];
+    const panel = panels[key];
           if (btn && panel) {
-            panel.hidden = false;
+      panel.hidden = false;
             btn.setAttribute('aria-expanded', 'true');
-            openKey = key;
+      openKey = key;
             requestAnimationFrame(() => {
-              const h = panel.offsetHeight || 0;
-              document.documentElement.style.setProperty('--mega-h', h + 'px');
-              document.documentElement.classList.add('mega-open');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-          }
-        }
+        const h = panel.offsetHeight || 0;
+        document.documentElement.style.setProperty('--mega-h', h + 'px');
+        document.documentElement.classList.add('mega-open');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  }
 
         const qInput = document.getElementById('bg-q');
         const qBtn   = document.getElementById('bg-q-go');
@@ -4264,76 +4307,76 @@
           }
         });
 
-        let hoverTimerOpen = null, hoverTimerClose = null;
+  let hoverTimerOpen = null, hoverTimerClose = null;
         buttons.forEach(b => {
           b.addEventListener('mouseenter', () => {
-            clearTimeout(hoverTimerClose); clearTimeout(hoverTimerOpen);
-            const key = b.dataset.menu;
+      clearTimeout(hoverTimerClose); clearTimeout(hoverTimerOpen);
+      const key = b.dataset.menu;
             hoverTimerOpen = setTimeout(() => openMenu(key), 120);
-          });
+    });
           b.addEventListener('click', () => {
-            const key = b.dataset.menu;
+      const key = b.dataset.menu;
             if (openKey === key) closeAll(); else openMenu(key);
-          });
-        });
+    });
+  });
         Object.values(panels).forEach(panel => {
           if (!panel) return;
           panel.addEventListener('mouseenter', () => clearTimeout(hoverTimerClose));
           panel.addEventListener('mouseleave', () => {
-            clearTimeout(hoverTimerClose);
+      clearTimeout(hoverTimerClose);
             hoverTimerClose = setTimeout(() => closeAll(), 160);
-          });
-        });
+    });
+  });
         document.querySelector('.bg-header')?.addEventListener('mouseleave', () => {
-          clearTimeout(hoverTimerClose);
+    clearTimeout(hoverTimerClose);
           hoverTimerClose = setTimeout(() => closeAll(), 180);
-        });
+  });
 
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAll(); });
         document.addEventListener('click', (e) => {
-          const inside = e.target.closest('.bg-header-inner') || e.target.closest('.bg-mega');
+    const inside = e.target.closest('.bg-header-inner') || e.target.closest('.bg-mega');
           if (!inside) closeAll();
-        });
+  });
 
         document.querySelector('.bg-nav a[href="#bg-checkout"]')?.addEventListener('click', (e) => {
-          e.preventDefault();
-          const checkout = document.getElementById('bg-checkout');
-          if (checkout && !checkout.hasAttribute('hidden')) {
-            closeAll();
-            checkout.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          } else {
-            const modal = document.getElementById('bg-modal');
-            const body  = document.getElementById('bg-modal-body');
-            if (modal && body) {
-              body.innerHTML = `
-                <div style="font-size:20px;font-weight:800;margin-bottom:6px">Ingen pågående bokning</div>
-                <p>Gör en sökning först så dyker <em>Min resa</em> upp här.</p>
-                <button id="js-go-search" class="bg-btn" type="button">Sök resa</button>
-              `;
-              modal.hidden = false;
+    e.preventDefault();
+    const checkout = document.getElementById('bg-checkout');
+    if (checkout && !checkout.hasAttribute('hidden')) {
+      closeAll();
+      checkout.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      const modal = document.getElementById('bg-modal');
+      const body  = document.getElementById('bg-modal-body');
+      if (modal && body) {
+        body.innerHTML = `
+          <div style="font-size:20px;font-weight:800;margin-bottom:6px">Ingen pågående bokning</div>
+          <p>Gör en sökning först så dyker <em>Min resa</em> upp här.</p>
+          <button id="js-go-search" class="bg-btn" type="button">Sök resa</button>
+        `;
+        modal.hidden = false;
               document.getElementById('js-go-search')?.addEventListener('click', () => {
-                modal.hidden = true;
-                document.getElementById('bg-sj-search')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              });
-            }
-          }
+          modal.hidden = true;
+          document.getElementById('bg-sj-search')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
+      }
+    }
+  });
 
         document.querySelector('.bg-nav a[href="#kundservice"]')?.addEventListener('click', (e) => {
-          e.preventDefault();
-          closeAll();
-          document.getElementById('kundservice')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
+    e.preventDefault();
+    closeAll();
+    document.getElementById('kundservice')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 
         document.querySelectorAll('.bg-mega a[href^="#"]').forEach(a => {
           a.addEventListener('click', (e) => {
-            const href = a.getAttribute('href');
+    const href = a.getAttribute('href');
             if (!href || href === '#') return;
-            e.preventDefault();
-            closeAll();
-            const el = document.querySelector(href);
-            if (el) {
-              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    e.preventDefault();
+    closeAll();
+    const el = document.querySelector(href);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               if (href === '#bg-sj-search') document.getElementById('bg-from-input')?.focus();
             }
           });
@@ -4396,29 +4439,29 @@
           }
         }
 
-        const burger = document.getElementById('bg-burger');
-        const drawer = document.getElementById('bg-drawer');
-        if (burger && drawer) {
+  const burger = document.getElementById('bg-burger');
+  const drawer = document.getElementById('bg-drawer');
+  if (burger && drawer) {
           function toggleDrawer() {
-            const shouldOpen = drawer.hasAttribute('hidden');
-            if (shouldOpen) drawer.removeAttribute('hidden'); else drawer.setAttribute('hidden','');
-            burger.setAttribute('aria-expanded', String(shouldOpen));
-          }
-          burger.addEventListener('click', toggleDrawer);
-          drawer.addEventListener('click', (e)=>{
+      const shouldOpen = drawer.hasAttribute('hidden');
+      if (shouldOpen) drawer.removeAttribute('hidden'); else drawer.setAttribute('hidden','');
+      burger.setAttribute('aria-expanded', String(shouldOpen));
+    }
+    burger.addEventListener('click', toggleDrawer);
+    drawer.addEventListener('click', (e)=>{
             const link = e.target.closest('.bg-drawer-item');
-            if (link) {
+      if (link) {
               const href = link.getAttribute('href');
               const dataMenu = link.getAttribute('data-menu');
               
               // Close drawer first
-              toggleDrawer();
+        toggleDrawer();
               
               if (dataMenu) {
                 // Handle menu items (Resor, Sök & bevaka)
                 openMenu(dataMenu);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        e.preventDefault();
               } else if (href) {
                 // Handle direct links (Min resa, Kundservice, Logga in)
                 if (href.startsWith('#')) {
@@ -4430,11 +4473,11 @@
                 }
                 // For external links, let them work normally
               }
-            } else if (e.target === drawer) {
-              toggleDrawer();
-            }
-          });
-        }
+      } else if (e.target === drawer) {
+        toggleDrawer();
+      }
+    });
+  }
       });
 
       /* =======================================================
@@ -4512,8 +4555,8 @@
         window.removeEventListener('scroll', window.onScroll);
         window.addEventListener('scroll', wrapped, {passive:true});
         window.onScroll = wrapped;
-      }
-    })();
+  }
+})();
 
     /* === "Tur & retur" return prompt (debounced, checks datepicker) === */
     (function(){
@@ -4591,10 +4634,9 @@
         observer.observe(resultsWrap, { attributes: true, attributeFilter: ['hidden'], childList: true, subtree: true });
       }
     })();
-  </script>
+</script>
   <!-- ================================
        SCRIPTS END
        ================================ -->
 </body>
 </html>
-
