@@ -1,3 +1,6 @@
+ 
+
+
   <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -2435,7 +2438,7 @@
   </header>
 
   <div class="bg-form-shell">
-    <h2 class="bg-page-title">Boka din resa</h2>
+  <h2 class="bg-page-title">Boka din resa</h2>
 
       <!-- Rad 1: Från / Vänd / Till -->
 <div class="bg-grid">
@@ -3745,6 +3748,19 @@
           const operator = (leg.operator || '').trim();
           const category = (leg.category || '').trim();
           
+          // ✅ SNÄLLTÅGET - TVINGA "Snälltåget" som text
+          const combined = `${operator} ${name} ${category} ${number}`.toLowerCase();
+          // Matcha på operatörnamn ELLER Snälltågets tågnummer (3943, 539, 541, 543, 917, 919, etc.)
+          if (/sn[aä]llt[aå]get|snallt[ao]get/i.test(combined) || 
+              /t[aå]g\s*(3943|539|541|543|917|919)\b/i.test(combined)) {
+            vehicles.push({
+              icon: `<img class="bg-train-icon train-icon" src="${IMG_SNALL}" alt="Snälltåget" loading="lazy">`,
+              text: 'Snälltåget',
+              leg: leg
+            });
+            continue; // ✅ Hoppa över vanlig hantering
+          }
+          
           // Build display text - prefer name, fallback to category
           let displayText = '';
           if (name) {
@@ -4371,21 +4387,33 @@ window.quickSearchByNames = quickSearchByNames;
         `;
 
         detailLegs.forEach((L, li) => {
-          const label = [firstNonBlank(L.name, L.category, ''), firstNonBlank(L.operator, '')].filter(Boolean).join(', ');
+          // ✅ SNÄLLTÅGET - TVINGA "Snälltåget" som text i modalen
+          const combined = `${L.operator || ''} ${L.name || ''} ${L.category || ''} ${L.number || ''}`.toLowerCase();
+          let label = '';
+          let legIconHtml = '';
+          
+          // Matcha på operatörnamn ELLER Snälltågets tågnummer (3943, 539, 541, 543, 917, 919, etc.)
+          if (/sn[aä]llt[aå]get|snallt[ao]get/i.test(combined) || 
+              /t[aå]g\s*(3943|539|541|543|917|919)\b/i.test(combined)) {
+            label = 'Snälltåget';
+            legIconHtml = `<img class="bg-train-icon modal" src="${IMG_SNALL}" alt="Snälltåget" loading="lazy">`;
+          } else {
+            label = [firstNonBlank(L.name, L.category, ''), firstNonBlank(L.operator, '')].filter(Boolean).join(', ');
+            
+            // Get per-leg icon (bus or train)
+            const legIcon = pickLegIcon(L);
+            if (legIcon) {
+              if (legIcon.inline) {
+                legIconHtml = `<span class="bg-train-icon modal" aria-label="${legIcon.label}">${legIcon.inline}</span>`;
+              } else if (legIcon.url) {
+                legIconHtml = `<img class="bg-train-icon modal" src="${legIcon.url}" alt="${legIcon.label}" loading="lazy">`;
+              }
+            }
+          }
+          
           const depL  = fmtTime(L.from?.rtTime || L.from?.time);
           const arrL  = fmtTime(L.to?.rtTime || L.to?.time);
           const stops = Array.isArray(L.stops) ? L.stops : [];
-
-          // Get per-leg icon (bus or train)
-          const legIcon = pickLegIcon(L);
-          let legIconHtml = '';
-          if (legIcon) {
-            if (legIcon.inline) {
-              legIconHtml = `<span class="bg-train-icon modal" aria-label="${legIcon.label}">${legIcon.inline}</span>`;
-            } else if (legIcon.url) {
-              legIconHtml = `<img class="bg-train-icon modal" src="${legIcon.url}" alt="${legIcon.label}" loading="lazy">`;
-            }
-          }
 
           rows += `
             <div class="bg-legrow" style="padding-top:6px;padding-bottom:0">
@@ -4487,21 +4515,33 @@ window.quickSearchByNames = quickSearchByNames;
 
         const addStops = () => {
           legs.forEach((L, li) => {
-            const label = [firstNonBlank(L.name, L.category, ''), firstNonBlank(L.operator, '')].filter(Boolean).join(', ');
+            // ✅ SNÄLLTÅGET - TVINGA "Snälltåget" som text i modalen (renderDetailsFromLegs)
+            const combined = `${L.operator || ''} ${L.name || ''} ${L.category || ''} ${L.number || ''}`.toLowerCase();
+            let label = '';
+            let legIconHtml = '';
+            
+            // Matcha på operatörnamn ELLER Snälltågets tågnummer (3943, 539, 541, 543, 917, 919, etc.)
+            if (/sn[aä]llt[aå]get|snallt[ao]get/i.test(combined) || 
+                /t[aå]g\s*(3943|539|541|543|917|919)\b/i.test(combined)) {
+              label = 'Snälltåget';
+              legIconHtml = `<img class="bg-train-icon modal" src="${IMG_SNALL}" alt="Snälltåget" loading="lazy">`;
+            } else {
+              label = [firstNonBlank(L.name, L.category, ''), firstNonBlank(L.operator, '')].filter(Boolean).join(', ');
+              
+              // Get per-leg icon (bus or train)
+              const legIcon = pickLegIcon(L);
+              if (legIcon) {
+                if (legIcon.inline) {
+                  legIconHtml = `<span class="bg-train-icon modal" aria-label="${legIcon.label}">${legIcon.inline}</span>`;
+                } else if (legIcon.url) {
+                  legIconHtml = `<img class="bg-train-icon modal" src="${legIcon.url}" alt="${legIcon.label}" loading="lazy">`;
+                }
+              }
+            }
+            
             const depL  = fmtTime(firstNonBlank(L.rtDep, L.plannedDep));
             const arrL  = fmtTime(firstNonBlank(L.rtArr, L.plannedArr));
             const stops = Array.isArray(L.stops) ? L.stops : [];
-
-            // Get per-leg icon (bus or train)
-            const legIcon = pickLegIcon(L);
-            let legIconHtml = '';
-            if (legIcon) {
-              if (legIcon.inline) {
-                legIconHtml = `<span class="bg-train-icon modal" aria-label="${legIcon.label}">${legIcon.inline}</span>`;
-              } else if (legIcon.url) {
-                legIconHtml = `<img class="bg-train-icon modal" src="${legIcon.url}" alt="${legIcon.label}" loading="lazy">`;
-              }
-            }
 
     rows += `
       <div class="bg-legrow" style="padding-top:6px;padding-bottom:0">
@@ -5080,4 +5120,4 @@ window.addEventListener('DOMContentLoaded', () => {
        SCRIPTS END
        ================================ -->
 </body>
-</html>
+</html> 
