@@ -4,6 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>BiljettGarant – Boka din resa</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon-512.png">
 
   <!-- =========================================================
        STYLES START
@@ -14,7 +19,8 @@
        0) Bas / Variabler / Resets
        ========================================================= */
     :root { 
-      --brand: #661f2c;
+      --brand: #ffc500; /* Sveriges Ambassad gul */
+      --brand-dark: #1e3a5f; /* Sveriges Ambassad mörk blå */
       --brand-light: color-mix(in srgb, var(--brand) 25%, transparent);
       --brand-lighter: color-mix(in srgb, var(--brand) 10%, transparent);
       --text-primary: #1a1a1a;
@@ -24,6 +30,8 @@
       --border-medium: #d9d9d9;
       --background-white: #fff;
       --background-light: #f6f7fb;
+      --form-bg-dark: #1e3a5f; /* Mörk blå bakgrund för formulär (Ambassad-stil) */
+      --form-text-light: #ffffff; /* Vit text på mörk bakgrund */
       --spacing-xs: 0.25rem;
       --spacing-sm: 0.5rem;
       --spacing-md: 1rem;
@@ -40,8 +48,23 @@
       --shadow-lg: 0 12px 30px rgba(0,0,0,0.08);
     }
     
+    html {
+      background: linear-gradient(180deg, #2a4a6f 0%, #1e3a5f 100%); /* Sveriges Ambassad blå bakgrund på hela sidan */
+      min-height: 100%;
+    }
+    
     body {
-      font-family: "sj_sans", arial, sans-serif;
+      font-family: sj_sans, arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      letter-spacing: normal;
+      background: transparent; /* Transparent så html-bakgrunden syns igenom */
+      min-height: 100vh;
+      margin: 0; /* Ta bort default margin */
+      padding: 0; /* Ta bort default padding */
     }
     
     [hidden] { display: none !important; }
@@ -126,19 +149,36 @@
       border: 0;
     }
     .bg-page-title, .bg-results-title { 
-      color: var(--brand);
+      color: var(--form-text-light); /* Vit text för bättre kontrast */
       font-weight: 800;
       line-height: 1.2;
+    }
+    
+    /* Titlar inuti det mörka formuläret ska vara vita */
+    #bg-sj-search .bg-page-title {
+      color: var(--form-text-light);
     }
 
     /* =========================================================
        1) Layout / Sida / Rubriker
        ========================================================= */
     #bg-sj-search.bg-wrap { 
-      max-width: 1040px; 
-      margin: var(--spacing-xl) auto 0;
-      padding: 0 var(--spacing-md);
-      font-family: "sj_sans", arial, sans-serif;
+      max-width: min(96%, 1800px); /* ÄNNU BREDARE */
+      width: 100%;
+      margin: var(--spacing-md) auto var(--spacing-xl); 
+      padding: 0; 
+      font-family: sj_sans, arial, sans-serif;
+      background: #1a2f4a; 
+      border-radius: var(--radius-xl); 
+      color: var(--form-text-light);
+      overflow: hidden; 
+    }
+    
+    @media (max-width: 768px) {
+      #bg-sj-search.bg-wrap {
+        max-width: min(96%, 600px); /* Säker bredd för mobil */
+        margin: var(--spacing-sm) auto var(--spacing-lg);
+      }
     }
     
     .bg-page-title { 
@@ -154,6 +194,7 @@
       margin: 0 auto;
       display: grid;
       gap: var(--spacing-md);
+      padding: var(--spacing-xl) var(--spacing-md); /* Flytta padding hit från bg-wrap */
     }
     
     #bg-sj-search .bg-grid { 
@@ -176,8 +217,9 @@
     #bg-sj-search .bg-label { 
       display: block; 
       margin: 0 0 var(--spacing-sm); 
-      font-weight: 700;
-      color: var(--text-primary);
+      font-weight: 400; /* SJ standard */
+      font-size: 1rem; /* SJ standard */
+      color: var(--form-text-light);
     }
     
     #bg-sj-search input[type="text"] {
@@ -185,18 +227,24 @@
       min-height: 44px; /* Improved click target */
       height: 56px;
       padding: var(--spacing-md) var(--spacing-lg);
-      border: 1px solid var(--border-medium); 
+      border: 1px solid rgba(255, 255, 255, 0.3); /* Vita kanter (Kivra-stil) */
       border-radius: var(--radius-lg);
-      background: var(--background-white); 
-      font-size: 16px; 
-      line-height: 1.2; 
+      background: rgba(255, 255, 255, 0.1); /* Lätt transparent vit bakgrund */
+      color: var(--form-text-light);
+      font-size: 1rem; /* SJ standard (16px) */
+      line-height: 1.5; /* SJ standard */ 
       outline: none;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
     }
     
     #bg-sj-search input:focus {
-      border-color: var(--brand);
-      box-shadow: 0 0 0 3px var(--brand-light);
+      border-color: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+    }
+    
+    #bg-sj-search input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
     }
     
     #bg-sj-search input:focus-visible {
@@ -226,10 +274,11 @@
       right: 0;
       margin: var(--spacing-sm) 0 0; 
       padding: var(--spacing-sm) 0;
-      background: var(--background-white); 
-      border: 1px solid var(--border-light); 
+      background: rgba(26, 26, 26, 0.95); 
+      border: 1px solid rgba(255, 255, 255, 0.3); 
       border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
       list-style: none; 
       max-height: 340px; 
       overflow: auto;
@@ -247,12 +296,16 @@
     
     .bg-list li.kbd-focus, 
     .bg-list li:hover { 
-      background: var(--background-light); 
+      background: rgba(255, 255, 255, 0.1); 
     }
     
     .bg-name { 
       font-weight: 600;
-      color: var(--text-primary);
+      color: var(--form-text-light);
+    }
+    
+    .bg-list .bg-type {
+      color: rgba(255, 255, 255, 0.7);
     }
 
     /* Custom scrollbars for search form area - Hidden on mobile */
@@ -314,14 +367,14 @@
       height: 24px; 
       border-radius: 50%; 
       border: 0; 
-      background: color-mix(in srgb, var(--brand) 15%, #fff);
+      background: rgba(255, 255, 255, 0.2);
       cursor: pointer; 
       font-weight: 400; 
       line-height: 24px; 
       text-align: center;
       display: none;
       font-size: 14px;
-      color: var(--brand);
+      color: rgba(255, 255, 255, 0.8);
       transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
       padding: 0;
       margin: 0;
@@ -330,19 +383,19 @@
     }
     
     .bg-clear:hover { 
-      background: color-mix(in srgb, var(--brand) 25%, #fff);
-      color: color-mix(in srgb, var(--brand) 80%, #000);
+      background: rgba(255, 255, 255, 0.3);
+      color: rgba(255, 255, 255, 1);
       transform: translateY(-50%); /* Behåll positionen */
     }
     
     .bg-clear:focus-visible {
-      outline: 2px solid var(--brand);
+      outline: 2px solid rgba(255, 255, 255, 0.5);
       outline-offset: 1px;
       transform: translateY(-50%); /* Behåll positionen */
     }
     
     .bg-clear:active {
-      background: color-mix(in srgb, var(--brand) 35%, #fff);
+      background: rgba(255, 255, 255, 0.4);
       transform: translateY(-50%) scale(0.95); /* Behåll vertikal position när man klickar */
     }
 
@@ -383,8 +436,8 @@
     
     .bg-card input[type="radio"]:checked, 
     .opt input[type="radio"]:checked {
-      border-color: transparent; 
-      background: var(--brand);
+      border-color: var(--brand); /* GUL ring runt */
+      background: transparent; /* Genomskinlig bakgrund */
     }
     
     .bg-card input[type="radio"]:checked::after, 
@@ -393,7 +446,7 @@
       position: absolute; 
       inset: 4px; 
       border-radius: 50%; 
-      background: var(--background-white);
+      background: #1a2f4a; /* MÖRK BLÅ fyllning inuti */
     }
     
     .bg-card input[type="radio"]:focus-visible, 
@@ -444,16 +497,17 @@
       display: flex;
       flex-direction: column;
       gap: var(--spacing-xs);
-      background: var(--background-white);
-      border: 1px solid var(--border-light);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: var(--radius-xl);
       padding: var(--spacing-sm) var(--spacing-md);
-      box-shadow: var(--shadow-sm);
+      box-shadow: none;
     }
 
     .bg-dategroup:focus-within {
-      border-color: color-mix(in srgb, var(--brand) 45%, var(--border-light));
-      box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 18%, transparent);
+      border-color: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
     }
 
     .bg-dategroup .bg-label {
@@ -479,11 +533,11 @@
       background: transparent;
       font-size: 1rem;
       font-weight: 600;
-      color: var(--text-primary);
+      color: var(--form-text-light);
     }
 
     .bg-date-wrap input::placeholder {
-      color: var(--text-secondary);
+      color: rgba(255, 255, 255, 0.6);
       font-weight: 500;
     }
     
@@ -498,20 +552,22 @@
       width: 44px; 
       height: 44px; 
       border-radius: var(--radius-md); 
-      border: 1px solid var(--border-light);
-      background: var(--background-white); 
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1); 
+      color: var(--form-text-light);
       cursor: pointer; 
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
     }
     
     .bg-cal-btn:hover { 
-      border-color: var(--brand); 
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.15);
     }
     
     .bg-cal-btn:focus-visible { 
       outline: none; 
-      border-color: var(--brand); 
-      box-shadow: 0 0 0 3px var(--brand-light); 
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2); 
     }
 
     .bg-cal-btn:hover,
@@ -532,12 +588,12 @@
     .bg-section-hd { 
       font-weight: 700; 
       margin-bottom: 0;
-      color: var(--text-primary);
+      color: var(--form-text-light); /* Vit text för "Resenärer" rubrik */
       font-size: 1.35rem;
     }
     
     .bg-section-sub { 
-      color: var(--text-secondary); 
+      color: rgba(255, 255, 255, 0.7); /* Ljus grå/vit text för undertext */
       margin: 0;
       font-size: .98rem;
       line-height: 1.5;
@@ -558,12 +614,12 @@
     .bg-person { 
       display: flex; 
       align-items: center;  
-      gap: var(--spacing-md); 
-      padding: 16px 18px; 
-      background: var(--background-white); 
-      border: 1px solid #e3e3e3; 
-      border-radius: 18px; 
-      min-height: 70px;
+      gap: var(--spacing-sm); /* Mindre gap mellan element */
+      padding: 14px 16px; /* Kompaktare padding */
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 14px; /* Lite mindre rundning */
+      min-height: 60px; /* Lägre höjd - mer kompakt */
       position: relative;
       transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
     }
@@ -579,8 +635,8 @@
     }
     
     .bg-person:hover {
-      border-color: color-mix(in srgb, var(--brand) 30%, #e3e3e3);
-      background: color-mix(in srgb, var(--brand) 6%, #fff);
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.15);
     }
     
     .bg-person:hover::after{
@@ -593,7 +649,7 @@
       display: flex; 
       gap: var(--spacing-sm); 
       align-items: center;
-      color: var(--text-primary);
+      color: var(--form-text-light); /* Vit text */
     }
     
     .bg-ico { 
@@ -603,8 +659,8 @@
       align-items:center;
       justify-content:center;
       border-radius: 50%;
-      background: color-mix(in srgb, var(--brand) 12%, #f3f3f3);
-      color: var(--brand);
+      background: rgba(255, 197, 0, 0.15); /* Lätt gul bakgrund */
+      color: #f4c430; /* GULD/ljusare gul färg för resenär-ikoner */
       flex-shrink:0;
     }
     
@@ -625,20 +681,23 @@
     .bg-stepper { 
       display: inline-flex; 
       align-items: center; 
-      gap: var(--spacing-sm); 
-      background: var(--background-light); 
-      border: 1px solid var(--border-light); 
+      gap: 6px; 
+      background: rgba(255, 255, 255, 0.05); 
+      border: 1px solid rgba(255, 255, 255, 0.2); 
       border-radius: var(--radius-md); 
-      padding: var(--spacing-xs);
+      padding: 4px 6px;
       margin-left: auto;
+      margin-right: 18px; /* ÄNNU MER marginal från högerkanten */
+      flex-shrink: 0; 
     }
     
     .bg-step { 
-      width: 44px; 
-      height: 44px; 
+      width: 30px; /* Mindre knappar för att passa helt innanför */
+      height: 30px; 
       border: 0; 
       border-radius: var(--radius-sm); 
-      background: var(--background-white); 
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--form-text-light);
       line-height: 1; 
       text-align: center; 
       cursor: pointer;
@@ -646,12 +705,13 @@
       align-items: center;
       justify-content: center;
       font-weight: 600;
+      font-size: 20px; /* Större ikon för bättre synlighet */
       transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
     }
     
     .bg-step:hover {
-      background: var(--brand);
-      color: var(--background-white);
+      background: var(--brand); /* Gul bakgrund vid hover */
+      color: #1a2f4a; /* Mörk blå text vid hover */
     }
     
     .bg-step:focus-visible {
@@ -663,7 +723,7 @@
       width: 32px; 
       text-align: center; 
       font-weight: 700;
-      color: var(--text-primary);
+      color: var(--form-text-light); /* Vit text */
     }
 
     /* =========================================================
@@ -673,18 +733,19 @@
       background: none; 
       border: none; 
       padding: var(--spacing-sm); 
-      color: var(--text-primary); 
+      color: var(--brand); /* Gul text för kampanjkod-länk */
       font-weight: 600; 
       cursor: pointer;
       border-radius: var(--radius-sm);
-      transition: background-color var(--transition-fast);
+      transition: background-color var(--transition-fast), opacity var(--transition-fast);
       min-height: 44px;
       display: flex;
       align-items: center;
     }
     
     .bg-collapser:hover {
-      background: var(--background-light);
+      background: rgba(255, 197, 0, 0.1); /* Lätt gul bakgrund vid hover */
+      opacity: 0.9;
     }
     
     .bg-collapser:focus-visible {
@@ -705,12 +766,13 @@
     
     .bg-btn { 
       background: var(--brand); 
-      color: var(--background-white); 
+      color: #000000 !important; /* SVART text för bästa kontrast på gul bakgrund */
       border: none; 
-      border-radius: 999px; 
+      border-radius: var(--radius-lg); 
       padding: 18px var(--spacing-xl); 
-      font-weight: 700; 
-      font-size: 17px;
+      font-weight: 700; /* SJ använder 700 för knappar */
+      font-size: 1rem; /* SJ standard (16px) */
+      line-height: 1.5; /* SJ standard */
       cursor: pointer;
       transition: filter var(--transition-fast), transform var(--transition-fast);
       min-height: 52px;
@@ -721,17 +783,18 @@
     }
     
     .bg-btn:hover { 
-      filter: brightness(0.95);
+      filter: brightness(1.1);
       transform: translateY(-1px);
     }
     
     .bg-btn:focus-visible {
-      outline: 2px solid var(--background-white);
+      outline: 2px solid rgba(255, 255, 255, 0.5);
       outline-offset: 2px;
     }
     
     .bg-btn:active {
       transform: translateY(0);
+      filter: brightness(0.95);
     }
 
     /* =========================================================
@@ -744,8 +807,9 @@
       align-items: stretch;
       margin: var(--spacing-xl) auto 0;
       width: 100%;
-      max-width: 640px;
-      padding: 0 var(--spacing-md);
+      max-width: 880px;
+      padding: 0 clamp(var(--spacing-sm), 5vw, var(--spacing-xl));
+      background: transparent; /* Transparent för att visa den gröna bakgrunden */
     }
     
     .bg-results-wrap > aside,
@@ -755,9 +819,9 @@
     
     @media (min-width: 960px) {
       .bg-results-wrap {
-        max-width: 1040px;
+        max-width: 1320px;
         display: grid;
-        grid-template-columns: 340px minmax(0, 1fr);
+        grid-template-columns: 420px minmax(0, 1fr);
         gap: var(--spacing-xl);
         align-items: start;
         padding: 0;
@@ -794,11 +858,11 @@
     .bg-calbox {
       grid-column: 1;
       justify-self: start;
-      background: var(--background-white);
-      border: 1px solid var(--border-light);
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: var(--radius-xl);
       padding: var(--spacing-md);
-      box-shadow: var(--shadow-md);
+      box-shadow: none;
       width: min(100%, 360px);
       overflow: hidden;
     }
@@ -836,9 +900,10 @@
       overflow: hidden;
       box-sizing: border-box;
       border-radius: var(--radius-xl);
-      border: 1px solid var(--border-light);
-      box-shadow: var(--shadow-md);
-      background: var(--background-white);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      background: rgba(42, 74, 111, 0.95); /* Lätt transparent blå bakgrund */
+      backdrop-filter: blur(10px);
     }
     
     .bg-cal-head { 
@@ -852,14 +917,14 @@
     #mini-title, 
     #mini-title-ret { 
       font-weight: 700;
-      color: var(--text-primary);
+      color: rgba(255, 255, 255, 0.95) !important; /* VIT MÅNADSTEXT */
       font-size: 0.95rem;
       text-transform: capitalize;
     }
     
     .bg-cal-nav { 
-      background: color-mix(in srgb, var(--brand) 10%, var(--background-white)); 
-      border: 1px solid var(--border-light); 
+      background: rgba(255, 255, 255, 0.05) !important; /* LÄTT BAKGRUND */
+      border: 2px solid rgba(255, 255, 255, 0.5) !important; /* TYDLIGARE RING */
       border-radius: 50%; 
       padding: var(--spacing-xs); 
       cursor: pointer;
@@ -869,12 +934,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--text-primary);
+      color: rgba(255, 255, 255, 0.9) !important; /* LJUSARE PIL */
+      font-size: 20px;
+      font-weight: 700;
     }
     
     .bg-cal-nav:hover { 
-      background: color-mix(in srgb, var(--brand) 20%, var(--background-white)); 
-      border-color: color-mix(in srgb, var(--brand) 35%, var(--border-light));
+      background: rgba(255, 255, 255, 0.15) !important; /* LJUSARE VID HOVER */
+      border-color: rgba(255, 255, 255, 0.8) !important; /* STARKARE RING */
     }
     
     .bg-cal-grid { 
@@ -907,7 +974,7 @@
       background: transparent;
       font-size: 0.95rem;
       font-weight: 600;
-      color: var(--text-primary);
+      color: rgba(255, 255, 255, 0.9) !important; /* LJUSARE VIT TEXT */
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -966,21 +1033,54 @@
        8) Reskort (resultatlistan) - SJ-liknande design
        ========================================================= */
     .bg-trip {
-      background: var(--background-white); 
-      border: 1px solid var(--border-light); 
+      background: transparent; 
+      border: 1px solid rgba(255, 255, 255, 0.3); 
       border-radius: var(--radius-xl); 
-      padding: var(--spacing-lg); 
-      margin: var(--spacing-md) 0;
-      box-shadow: var(--shadow-sm);
+      padding: var(--spacing-xl); 
+      margin: var(--spacing-lg) auto;
+      box-shadow: none;
       cursor: pointer;
       transition: all var(--transition-normal);
       position: relative;
+      width: min(100%, 880px);
+      color: #ffffff !important; /* VIT TEXT */
+    }
+    
+    /* VIKTIGT: Tvinga VIT text för ALLA element i resekorten */
+    .bg-trip,
+    .bg-trip *,
+    .bg-trip .bg-times,
+    .bg-trip .bg-meta,
+    .bg-trip .bg-route-info,
+    .bg-trip .bg-price,
+    .bg-trip .bg-price-label,
+    .bg-trip .bg-classes,
+    .bg-trip .bg-train-info,
+    .bg-trip .bg-operator,
+    .bg-trip p,
+    .bg-trip span,
+    .bg-trip div {
+      color: #ffffff !important;
+    }
+    
+    /* UNDANTAG: "Välj"-knappen ska ha SVART text */
+    .bg-trip .bg-btn,
+    .bg-trip button.bg-btn {
+      color: #000000 !important;
+    }
+    
+    /* EXTRA STARK REGEL: Tvinga VIT text på specifika klasser */
+    .bg-trip .bg-times,
+    .bg-trip .bg-meta,
+    .bg-trip .bg-route-info,
+    .bg-trip .bg-operator {
+      color: #ffffff !important;
     }
     
     .bg-trip:hover {
-      background: color-mix(in srgb, var(--brand) 8%, var(--background-white));
-      border-color: color-mix(in srgb, var(--brand) 20%, var(--border-light));
-      box-shadow: var(--shadow-md);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       transform: translateY(-1px);
     }
     
@@ -1007,7 +1107,7 @@
     .bg-times { 
       font-size: 24px; 
       font-weight: 700; 
-      color: var(--text-primary); 
+      color: #ffffff !important; /* VIT TEXT */
       line-height: 1.2;
     }
     
@@ -1015,20 +1115,21 @@
       font-size: 14px; 
       font-weight: 600; 
       margin-left: var(--spacing-sm);
+      color: #ffffff !important; /* VIT TEXT */
     }
     
     .bg-delay.on { 
-      color: #d32f2f;
+      color: #ff6b6b !important; /* Ljusare röd på mörk bakgrund */
     }
     
     .bg-meta { 
-      color: var(--text-secondary); 
+      color: #ffffff !important; /* VIT TEXT */
       font-size: 14px; 
       margin-top: 2px;
     }
     
     .bg-route-info { 
-      color: var(--text-muted); 
+      color: #ffffff !important; /* HELT VIT TEXT */
       font-size: 13px; 
       margin-top: 1px;
     }
@@ -1044,18 +1145,18 @@
     .bg-price { 
       font-size: 20px; 
       font-weight: 700; 
-      color: var(--text-primary);
+      color: #ffffff !important; /* VIT TEXT */
     }
     
     .bg-price-label { 
       font-size: 12px; 
-      color: var(--text-secondary); 
+      color: #ffffff !important; /* VIT TEXT */
       font-weight: 500;
     }
     
     .bg-classes { 
       font-size: 12px; 
-      color: var(--text-secondary); 
+      color: rgba(255, 255, 255, 0.8) !important; /* Lite genomskinlig vit */
       line-height: 1.3;
     }
 
@@ -1084,11 +1185,11 @@
     .bg-train-icon { 
       display: inline-flex;
       align-items: center;
-      height: 18px;
+      height: 32px; /* Ökad från 26px till 32px */
       vertical-align: middle;
-      margin-right: 6px;
-      opacity: 0.95;
-      max-width: 80px;
+      margin-right: var(--spacing-sm);
+      opacity: 0.98;
+      max-width: 180px; /* Ökad från 140px */
       overflow: hidden;
     }
     
@@ -1098,10 +1199,10 @@
     }
     
     .bg-train-icon.modal {
-      height: 20px;
+      height: 28px; /* Ökad från 22px till 28px */
       margin-left: 6px;
       margin-right: 0;
-      max-width: 90px;
+      max-width: 150px; /* Ökad från 120px */
     }
     
     .bg-train-icon-old { 
@@ -1124,15 +1225,15 @@
     }
 
     img.bg-train-icon {
-      height: 18px;
+      height: 26px;
       width: auto;
-      max-width: 80px;
+      max-width: 140px;
       display: inline-block;
     }
 
     img.bg-train-icon.modal {
-      height: 20px;
-      max-width: 90px;
+      height: 22px;
+      max-width: 120px;
     }
     
     .bg-train-name { 
@@ -1157,18 +1258,30 @@
     }
     
     .bg-service-icon { 
-      width: 16px; 
-      height: 16px; 
-      color: #661f2c;
+      width: 20px; /* Ökad från 16px till 20px */
+      height: 20px; 
+      color: #ffffff !important; /* VIT IKON */
+      fill: #ffffff !important; /* VIT FILL */
     }
-    /* Service icons in SJ-style cards - use brand color */
+    
+    /* Service icons - TVINGA VIT FÄRG */
+    .bg-service-icon svg,
+    .bg-service-icon svg path,
+    .bg-service-icon svg g,
+    .bg-service-icon svg g path,
+    .bg-trip .bg-service-icon,
+    .bg-trip .bg-service-icon svg,
+    .bg-trip .bg-service-icon svg path,
+    .bg-trip .bg-service-icon svg g,
+    .bg-trip .bg-service-icon svg g path,
     .bg-trip.sj .rc-pictos .bg-service-icon,
     .bg-trip.sj .rc-pictos svg,
     .bg-trip.sj .rc-pictos svg path,
     .bg-trip.sj .rc-pictos svg g,
     .bg-trip.sj .rc-pictos svg g path {
-      color: #661f2c !important;
-      fill: #661f2c !important;
+      color: #ffffff !important; /* VIT */
+      fill: #ffffff !important; /* VIT FILL */
+      stroke: #ffffff !important; /* VIT STROKE */
     }
 
     /* Action buttons */
@@ -1184,7 +1297,7 @@
     .linklike { 
       background: none; 
       border: none; 
-      color: #661f2c; /* Brandfärg för länkar */
+      color: var(--brand); /* Brandfärg för länkar */
       cursor: pointer; 
       font-weight: 500; 
       font-size: 14px; 
@@ -1209,9 +1322,9 @@
     
     .bg-btn { 
       background: var(--brand); 
-      color: var(--background-white); 
+      color: #000000 !important; /* SVART text för bästa kontrast på gul bakgrund */
       border: none; 
-      border-radius: 999px; 
+      border-radius: var(--radius-lg); 
       padding: 14px var(--spacing-lg); 
       font-weight: 700; 
       font-size: 16px; 
@@ -1224,12 +1337,12 @@
     }
     
     .bg-btn:hover { 
-      filter: brightness(0.95);
+      filter: brightness(1.1);
       transform: translateY(-1px);
     }
     
     .bg-btn:focus-visible {
-      outline: 2px solid var(--background-white);
+      outline: 2px solid rgba(255, 255, 255, 0.5);
       outline-offset: 2px;
     }
 
@@ -1263,10 +1376,10 @@
        ========================================================= */
     .bg-offer { 
       margin-top: var(--spacing-lg); 
-      background: var(--background-white); 
-      border: 1px solid var(--border-light); 
+      background: rgba(255, 255, 255, 0.95); /* Nästan vit bakgrund för kontrast */
+      border: 1px solid rgba(255, 255, 255, 0.5); 
       border-radius: var(--radius-xl); 
-      box-shadow: var(--shadow-sm); 
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
       padding: var(--spacing-lg);
     }
     
@@ -1280,31 +1393,51 @@
     .bg-offer-title { 
       font-size: clamp(1.5rem, 3vw, 1.75rem);
       font-weight: 800;
-      color: var(--text-primary);
+      color: #1a2f4a !important; /* MÖRK BLÅ text */
       line-height: 1.2;
     }
     
     .bg-offer-route { 
-      color: var(--text-muted); 
+      color: #1a2f4a !important; /* MÖRK BLÅ text */
       margin-top: 2px;
     }
     
+    /* TVINGA MÖRK BLÅ TEXT I ALLA .bg-offer ELEMENT */
+    .bg-offer,
+    .bg-offer *,
+    .bg-offer .bg-offer-sub,
+    .bg-offer label,
+    .bg-offer p,
+    .bg-offer span,
+    .bg-offer div,
+    .bg-offer .kv,
+    .bg-offer .bg-card-title,
+    .bg-offer .bg-card-text {
+      color: #1a2f4a !important;
+    }
+    
     .bg-close { 
-      background: var(--background-light); 
-      border: none; 
+      background: rgba(255, 255, 255, 0.9); /* Vit bakgrund som Till/Från */
+      border: 1px solid rgba(26, 47, 74, 0.15); /* Ljus mörk kant */
       border-radius: var(--radius-sm); 
       width: 44px; 
       height: 44px; 
       font-size: 20px; 
+      font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background-color var(--transition-fast);
+      color: #1a2f4a; /* Mörk blå text */
+      transition: all var(--transition-fast);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Lätt skugga */
     }
     
     .bg-close:hover {
-      background: #e0e0e0;
+      background: rgba(255, 255, 255, 1); /* Helt vit vid hover */
+      border-color: rgba(26, 47, 74, 0.3); /* Mörkare kant */
+      color: #1a2f4a;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     
     .bg-close:focus-visible {
@@ -1446,12 +1579,82 @@
     .bg-checkout{ margin-top:24px }
     .bg-checkout-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px }
     @media(max-width:1000px){ .bg-checkout-grid{ grid-template-columns:1fr } }
-    .bg-book-card, .bg-pay{ background:#fff; border:1px solid #eee; border-radius:16px; padding:16px }
-    .bg-pay-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px }
-    .bg-form label{ display:block; font-weight:700; margin:0 0 .3rem }
-    .bg-form input{ width:100%; padding:.9rem 1rem; border:1px solid #ddd; border-radius:12px }
-    .bg-row2{ display:grid; grid-template-columns:1fr 1fr; gap:12px }
-    @media(max-width:720px){ .bg-row2{ grid-template-columns:1fr } }
+    .bg-book-card, .bg-pay{ 
+      background: #f5f9fc !important; /* MYCKET LJUSARE - nästan vit med lätt blå ton */
+      border:1px solid rgba(26, 47, 74, 0.1); /* Mjukare kant */
+      border-radius:16px; 
+      padding:24px; /* Lite mer padding för luftigare känsla */
+      color: #1a2f4a !important; /* MÖRK BLÅ text */
+    }
+    
+    /* Säkerställ att ALLA element i .bg-pay får ljusare bakgrund */
+    .bg-dialog .bg-pay,
+    .bg-dialog .bg-book-card {
+      background: #f5f9fc !important;
+    }
+    
+    /* Betalningsalternativ (Swish, Kontokort, Privatfaktura) */
+    .bg-pay .opt label {
+      color: #1a2f4a !important;
+      font-weight: 400;
+    }
+    .bg-pay-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:16px !important; }
+    
+    /* TVINGA FRAM FORMULÄRET */
+    .bg-pay .bg-form,
+    #bg-checkout .bg-form,
+    .bg-checkout .bg-form{ 
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+    
+    .bg-form label{ 
+      display:block !important; 
+      font-weight:700 !important; 
+      margin:0 0 .3rem !important;
+      color: #1a2f4a !important;
+      visibility: visible !important;
+    }
+    
+    .bg-form input{ 
+      width:100% !important; 
+      padding:.9rem 1rem !important; 
+      border:1px solid rgba(26, 47, 74, 0.2) !important; 
+      border-radius:12px !important;
+      background: #ffffff !important;
+      color: #1a2f4a !important;
+      display: block !important;
+      visibility: visible !important;
+    }
+    
+    /* TVINGA FRAM BÅDA RADERNA */
+    .bg-pay .bg-row2,
+    #bg-checkout .bg-row2,
+    .bg-checkout .bg-row2,
+    .bg-form .bg-row2{ 
+      display:grid !important;
+      grid-template-columns:1fr 1fr !important; 
+      gap:12px !important;
+      margin-bottom: 16px !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    
+    .bg-row2 > div {
+      display: block !important;
+      visibility: visible !important;
+    }
+    
+    .bg-row2:first-child {
+      margin-top: 0 !important;
+    }
+    
+    @media(max-width:720px){ 
+      .bg-row2{ grid-template-columns:1fr !important; } 
+    }
     .bg-pay-opts{ display:flex; gap:14px; margin-top:10px }
     .opt{ display:flex; gap:.5rem; align-items:center }
     .bg-pay-actions{ display:flex; justify-content:space-between; align-items:center; margin-top:12px }
@@ -1461,14 +1664,107 @@
     /* =========================================================
        11) Modal
        ========================================================= */
-    .bg-modal{ position:fixed; inset:0; background:rgba(0,0,0,.5); display:grid; place-items:center; z-index:2000 }
-    .bg-dialog{ background:#111; color:#eee; max-width:780px; width:min(92vw,780px); border-radius:14px; padding:18px; position:relative }
-    .bg-dialog .bg-close{ position:absolute; right:10px; top:10px; background:#2a2a2a; color:#fff }
+    .bg-modal{ 
+      position:fixed; 
+      inset:0; 
+      background:rgba(0,0,0,.6); 
+      display:grid; 
+      place-items:center; 
+      z-index:2000;
+      cursor: pointer; /* Hint: klickbar bakgrund */
+    }
+    .bg-dialog{ 
+      background: rgba(26, 47, 74, 0.95); /* Mörk blå transparent bakgrund */
+      backdrop-filter: blur(10px); /* Frostat glas-effekt */
+      color: #ffffff; /* VIT text för läsbarhet på mörk bakgrund */
+      max-width:780px; 
+      width:min(92vw,780px); 
+      max-height: 88vh; /* Mer plats för innehåll */
+      overflow-y: auto !important; /* Tvinga scrollning */
+      overflow-x: hidden; /* Ingen horisontell scroll */
+      border-radius:18px; 
+      padding:24px; 
+      position:relative;
+      border: 1px solid rgba(255, 255, 255, 0.2); /* Lätt vit kant */
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling på iOS */
+      cursor: default; /* Normal cursor på kortet själv */
+    }
+    
+    /* Mobil - aggressiv höjdbegränsning för långa resor */
+    @media (max-width: 600px) {
+      .bg-dialog {
+        max-height: 85vh !important; /* Mer aggressiv på mobil */
+        padding: 20px 16px; /* Mindre padding på sidorna */
+        padding-bottom: 80px; /* Extra utrymme nertill för att se allt */
+      }
+    }
+    
+    /* Extra liten skärm eller liggande läge */
+    @media (max-height: 700px) {
+      .bg-dialog {
+        max-height: 82vh !important;
+        padding: 16px 12px;
+        padding-bottom: 60px;
+      }
+    }
+    
+    /* Mycket liten skärm */
+    @media (max-height: 600px) {
+      .bg-dialog {
+        max-height: 80vh !important;
+        padding: 12px;
+        padding-bottom: 50px;
+      }
+    }
+    
+    /* Specifik styling för "Din resa" titel */
+    .bg-dialog .bg-page-title {
+      color: #ffffff; /* VIT text för rubrik */
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    /* Säkerställ att text i dialog är vit (UTOM .bg-offer) */
+    .bg-dialog > *:not(.bg-offer),
+    .bg-dialog .bg-page-title {
+      color: #ffffff !important;
+    }
+    
+    /* Undantag för knappar som ska ha svart text */
+    .bg-dialog .bg-btn,
+    .bg-dialog button.bg-btn {
+      color: #000000 !important;
+    }
+    .bg-dialog .bg-close{ 
+      position:absolute; 
+      right:10px; 
+      top:10px; 
+      background: rgba(26, 47, 74, 0.95); /* Samma som modal-bakgrund */
+      border: 1px solid rgba(255, 255, 255, 0.2); /* Lätt vit kant */
+      color: #ffffff; /* Vit text */
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      transition: all var(--transition-fast);
+    }
+    .bg-dialog .bg-close:hover {
+      background: rgba(255, 255, 255, 0.15); /* Ljusare vid hover - märks tydligt! */
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transform: scale(1.05); /* Lite zoom-effekt */
+    }
 
+    /* Säkerställ att dialogens innehåll kan scrollas helt */
+    .bg-dialog-content {
+      min-height: min-content;
+      padding-bottom: 20px;
+    }
+    
     /* =========================================================
        12) Tidslinje i "Resedetaljer"
        ========================================================= */
-    .bg-timeline{ margin-top:10px }
+    .bg-timeline{ 
+      margin-top:10px;
+      min-height: min-content; /* Låt den växa fritt */
+      padding-bottom: 20px; /* Extra utrymme nertill */
+    }
     .bg-rowhead{
       display:grid; grid-template-columns:24px 72px 72px 1fr; gap:10px;
       color:#aaa; font-size:13px; border-bottom:1px solid #2b2b2b;
@@ -1505,27 +1801,50 @@
     /* =========================================================
        13) Header / Nav / Drawer / Offsets
        ========================================================= */
-    .bg-header{ position:sticky; top:0; z-index:1000; background:#fff; border-bottom:1px solid #eee }
-    .bg-header.scrolled{ box-shadow:0 6px 18px rgba(0,0,0,.06) }
-    .bg-header-inner{
-      max-width:1400px; margin:0 auto;
-      display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 14px;
+    .bg-header{ 
+      position:sticky; 
+      top:0; 
+      z-index:1000; 
+      background: #1a2f4a; /* Samma mörka blå som huvudinnehållet */
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtil separator */
+      margin: 0; /* Ingen marginal - header är nu INUTI huvudinnehållet */
+      padding: 0;
+      border-radius: 0; /* Inga rundade hörn på headern själv längre */
     }
-    .bg-logo{ display:flex; align-items:center; gap:8px; text-decoration:none; color:#111; font-weight:800 }
+    .bg-header.scrolled{ box-shadow:0 6px 18px rgba(0,0,0,.3) }
+    .bg-header-inner{
+      display:flex; align-items:center; justify-content:space-between; gap:14px; 
+      padding: 14px var(--spacing-md); /* Samma sidopadding som huvudinnehållet för jämna kanter */
+    }
+    .bg-logo{ display:flex; align-items:center; gap:12px; text-decoration:none; color: var(--form-text-light); font-weight:800 }
     .bg-logo-mark{
-      display:inline-grid; place-items:center; width:36px; height:36px; border-radius:12px; background:var(--brand); color:#fff
+      display:inline-flex; 
+      align-items:center; 
+      justify-content:center;
+      width:44px; 
+      height:44px; 
+      flex-shrink: 0;
+    }
+    .bg-logo-mark svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
     }
     .bg-logo-text{ font-size:20px; letter-spacing:.2px }
 
     .bg-nav{ display:flex; gap:12px; align-items:center }
     .bg-nav-btn{
-      background:#f7f7f7; border:1px solid #e6e6e6; border-radius:12px; padding:8px 12px; font-weight:700; cursor:pointer
+      background:rgba(255, 255, 255, 0.1); border:1px solid rgba(255, 255, 255, 0.2); border-radius:12px; padding:8px 12px; font-weight:700; cursor:pointer; color: var(--form-text-light); transition: all 0.2s ease;
+    }
+    .bg-nav-btn:hover{
+      background:rgba(255, 255, 255, 0.15); border-color:rgba(255, 255, 255, 0.3);
     }
     .bg-nav-btn[aria-expanded="true"]{
-      background:#fff; border-color:var(--brand); box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 20%, transparent)
+      background:rgba(255, 197, 0, 0.2); border-color:var(--brand); color: var(--brand);
     }
-    .bg-nav-link{ padding:8px 12px; border-radius:12px; text-decoration:none; color:#333 }
-    .bg-nav-link:hover{ background:#f7f7f7 }
+    .bg-nav-link{ padding:8px 12px; border-radius:12px; text-decoration:none; color: var(--form-text-light); transition: all 0.2s ease; }
+    .bg-nav-link:hover{ background:rgba(255, 255, 255, 0.1); color: var(--brand); }
 
     .bg-right{ display:flex; align-items:center; gap:10px }
     
@@ -1536,7 +1855,7 @@
       align-items:center; 
       gap:6px;
       background:var(--brand);
-      color:#fff; 
+      color:#1a2f4a; /* Mörk blå text på gul knapp för kontrast */
       border:none; 
       border-radius:999px;
       padding:8px 18px; 
@@ -1567,8 +1886,9 @@
     .bg-login-icon{
       flex-shrink:0; width:40px; height:40px;
       display:flex; align-items:center; justify-content:center;
-      background:color-mix(in srgb, var(--brand) 10%, #fff);
-      border-radius:8px; color:var(--brand);
+      background: rgba(26, 47, 74, 0.3); /* Lätt blå genomskinlig bakgrund */
+      border-radius:8px; 
+      color: #1a2f4a; /* MÖRK BLÅ ikon (brand-färg) */
     }
     .bg-login-content{ flex:1 }
     .bg-login-title{
@@ -1593,7 +1913,8 @@
       text-decoration:underline;
     }
     
-    .bg-burger{ display:none; background:#fff; border:1px solid #e6e6e6; border-radius:10px; padding:6px }
+    .bg-burger{ display:none; background:rgba(255, 255, 255, 0.1); border:1px solid rgba(255, 255, 255, 0.2); border-radius:10px; padding:6px; color: var(--form-text-light); }
+    .bg-burger:hover{ background:rgba(255, 255, 255, 0.15); }
     @media (max-width:960px){ .bg-nav{ display:none } .bg-burger{ display:inline-flex } }
 
     /* Scroll-offset för ankarlänkar */
@@ -1677,16 +1998,32 @@
     /* Swap-knapp mellan Från/Till */
     .bg-swap{
       display:grid; place-items:center; width:56px; height:56px; border-radius:999px;
-      background:#fff; border:1px solid #e6e6e6; color:var(--brand); cursor:pointer;
+      background: rgba(255, 255, 255, 0.1); 
+      border:1px solid rgba(255, 255, 255, 0.3); 
+      color: var(--form-text-light); 
+      cursor:pointer;
       align-self: center; /* Vertikalt centrerad mellan input-fälten */
+      transition: background-color var(--transition-fast), border-color var(--transition-fast);
     }
-    /* Justera vertikal position så swap-knappen är exakt mitt mellan input-fälten */
+    
+    /* MOBIL: Justera swap-knappen för perfekt centrering */
+    @media (max-width: 819px) {
+      .bg-swap {
+        margin-top: 32px; /* Extra marginal på mobil för att centrera mellan fälten */
+      }
+    }
+    
+    /* DESKTOP: Justera vertikal position så swap-knappen är exakt mitt mellan input-fälten */
     @media (min-width: 820px) {
       .bg-swap {
         margin-top: 28px; /* Kompensera för label-höjd + margin för att matcha input-fältets vertikala centrum */
       }
     }
-    .bg-swap:hover{ box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 18%,transparent) }
+    
+    .bg-swap:hover{ 
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
 
     /* Triptype (pills) */
     .bg-triptype{
@@ -1699,16 +2036,18 @@
     .bg-pill{
       display:inline-flex;
       align-items:center;
-      gap: var(--spacing-xs);
-      font-weight:600;
-      color: var(--text-primary);
+      gap: 10px; /* Lite mer gap mellan cirkel och text */
+      font-weight:400;
+      color: var(--form-text-light); /* Vit text som standard */
       cursor:pointer;
+      font-size: 1rem;
+      line-height: 1.5;
     }
     .bg-pill input{
       appearance:none;
-      width: 22px;
-      height:22px;
-      border:2px solid #bcbcbc;
+      width: 20px; /* Lite mindre cirkel som i bilden */
+      height:20px;
+      border:2px solid rgba(255, 255, 255, 0.6); /* Lite tydligare vit kant */
       border-radius:50%;
       display:inline-flex;
       align-items:center;
@@ -1716,26 +2055,35 @@
       position:relative;
       margin:0;
       cursor:pointer;
+      background: transparent;
+      flex-shrink: 0; /* Förhindra att cirkeln krymper */
       transition: border-color var(--transition-fast), background-color var(--transition-fast);
     }
     .bg-pill input::after{
       content:"";
+      position: absolute;
       width:10px;
       height:10px;
       border-radius:50%;
-      background:var(--brand);
+      background: var(--brand); /* Gul fyllning när checked */
       transform:scale(0);
       transition:transform var(--transition-fast);
     }
     .bg-pill input:checked{
-      border-color: var(--brand);
-      background: color-mix(in srgb, var(--brand) 20%, transparent);
+      border-color: var(--brand) !important; /* Gul kant */
+      background: transparent !important; /* Genomskinlig bakgrund */
     }
     .bg-pill input:checked::after{
-      transform:scale(1);
+      transform: scale(1) !important;
+      background: var(--brand) !important; /* Gul fyllning inuti */
+      opacity: 1 !important;
+    }
+    .bg-pill:has(input:checked) {
+      color: var(--form-text-light) !important; /* Behåll VIT text när vald */
+      font-weight: 400; /* Normal vikt */
     }
     .bg-pill input:focus-visible{
-      outline:2px solid color-mix(in srgb, var(--brand) 35%, transparent);
+      outline:2px solid rgba(255, 255, 255, 0.5);
       outline-offset:2px;
     }
     @media (max-width: 640px){
@@ -1746,16 +2094,36 @@
 
     /* Samma station-varning */
     .bg-warn{
-      margin:6px 0 0; padding:8px 10px; border:1px solid #b00020; color:#b00020;
-      border-radius:10px; font-weight:600; background:#fff5f6;
+      margin:6px 0 0; padding:8px 10px; border:1px solid #ff6b6b; color:#ff6b6b;
+      border-radius:10px; font-weight:600; background:rgba(255, 107, 107, 0.1);
     }
 
     /* Kundservice */
-    .bg-help { margin-top: 36px; }
-    .bg-help-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-    .bg-help .card { background: #fff; border: 1px solid #eee; border-radius: 14px; padding: 16px; }
+    .bg-help { 
+      margin-top: 36px; 
+      margin-bottom: var(--spacing-xl); /* Luft nedåt från kanten */
+      padding: 0 var(--spacing-lg); /* Lägg till sidopadding för luft från kanterna */
+      max-width: 1200px; /* Begränsa maxbredd */
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .bg-help .bg-page-title {
+      text-align: left; /* Vänsterjusterad, precis som h3 i korten */
+      margin-bottom: var(--spacing-md); /* Mellanrum under rubriken */
+      padding-left: 35px; /* Lagom centrering över Kontakta oss-boxen */
+    }
+    .bg-help-grid { 
+      display: grid; 
+      gap: var(--spacing-md); /* Behåll mellanrummet mellan korten */
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
+    }
+    .bg-help .card { background: transparent; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 14px; padding: 16px; }
+    .bg-help h3 { color: var(--form-text-light); font-weight: 600; margin-bottom: 12px; } /* Vita rubriker */
     .bg-help .faq { margin: 8px 0 0; padding-left: 18px; }
     .bg-help .faq li { margin: 4px 0; }
+    .bg-help .faq a { color: var(--brand); text-decoration: none; transition: opacity 0.2s; } /* Gula länkar */
+    .bg-help .faq a:hover { opacity: 0.8; text-decoration: underline; }
+    .bg-help p { color: var(--form-text-light); } /* Vit text för paragrafer */
 
     /* ===== Interaction performance: global-safe + booking scoped ===== */
 
@@ -1809,10 +2177,10 @@
     #bg-sj-search .bg-result-card.sj *,
     #bg-sj-search .bg-trip.sj,
     #bg-sj-search .bg-trip.sj * {
-      color: #000000 !important;
+      color: #ffffff !important; /* VIT TEXT I RESEKORT */
       opacity: 1 !important;
     }
-    /* Specific text elements - force black */
+    /* Specific text elements - force WHITE */
     #bg-sj-search .bg-result-card.sj .rc-times,
     #bg-sj-search .bg-trip.sj .rc-times,
     #bg-sj-search .bg-result-card.sj .rc-meta,
@@ -1827,13 +2195,13 @@
     #bg-sj-search .bg-trip.sj .rc-night,
     #bg-sj-search .bg-result-card.sj .rc-class,
     #bg-sj-search .bg-trip.sj .rc-class {
-      color: #000000 !important;
+      color: #ffffff !important; /* VIT TEXT */
       opacity: 1 !important;
     }
     /* Except for links (brand color), service icons, and buttons */
     #bg-sj-search .bg-result-card.sj .linklike,
     #bg-sj-search .bg-trip.sj .linklike {
-      color: #661f2c !important;
+      color: var(--brand) !important;
     }
     #bg-sj-search .bg-result-card.sj .bg-service-icon,
     #bg-sj-search .bg-trip.sj .bg-service-icon,
@@ -1845,7 +2213,44 @@
     }
     #bg-sj-search .bg-result-card.sj .bg-btn.js-choose,
     #bg-sj-search .bg-trip.sj .bg-btn.js-choose {
-      color: #ffffff !important;
+      color: #000000 !important; /* SVART text i "Välj"-knappen */
+    }
+    
+    /* =========================================================
+       SISTA REGELN - TVINGA MÖRK BLÅ TEXT I "DIN RESA" SEKTIONER
+       ========================================================= */
+    /* Modal: .bg-offer (Välj biljetttyp) */
+    .bg-dialog .bg-offer,
+    .bg-dialog .bg-offer *,
+    .bg-dialog .bg-offer h2,
+    .bg-dialog .bg-offer h3,
+    .bg-dialog .bg-offer h4,
+    .bg-dialog .bg-offer p,
+    .bg-dialog .bg-offer span,
+    .bg-dialog .bg-offer div,
+    .bg-dialog .bg-offer label,
+    .bg-dialog .bg-offer .bg-offer-title,
+    .bg-dialog .bg-offer .bg-offer-route,
+    .bg-dialog .bg-offer .bg-offer-sub,
+    .bg-dialog .bg-offer .bg-card-title,
+    .bg-dialog .bg-offer .bg-card-text,
+    .bg-dialog .bg-offer .kv,
+    /* Checkout: #bg-checkout (Din resa) */
+    .bg-dialog #bg-checkout,
+    .bg-dialog #bg-checkout *,
+    .bg-dialog #bg-checkout h2,
+    .bg-dialog #bg-checkout h3,
+    .bg-dialog #bg-checkout p,
+    .bg-dialog #bg-checkout span,
+    .bg-dialog #bg-checkout div,
+    .bg-dialog #bg-checkout label,
+    .bg-dialog .bg-checkout,
+    .bg-dialog .bg-checkout *,
+    .bg-dialog .bg-book-card,
+    .bg-dialog .bg-book-card *,
+    .bg-dialog .bg-pay,
+    .bg-dialog .bg-pay * {
+      color: #1a2f4a !important;
     }
   </style>
   <!-- ================================
@@ -1859,65 +2264,8 @@
 
 <body>
   <!-- =========================================================
-       HEADER
+       HEADER - Flyttad inuti #bg-sj-search för perfekt jämnade kanter
        ========================================================= -->
-<header class="bg-header" role="banner">
-  <div class="bg-header-inner">
-    <a class="bg-logo" href="/" aria-label="BiljettGarant – startsida">
-      <span class="bg-logo-mark">B</span><span class="bg-logo-text">BiljettGarant</span>
-    </a>
-
-    <nav class="bg-nav" aria-label="Huvudmeny">
-      <button class="bg-nav-btn" type="button" data-menu="resor" aria-controls="menu-resor" aria-expanded="false">Resor</button>
-      <button class="bg-nav-btn" type="button" data-menu="sok" aria-controls="menu-sok" aria-expanded="false">Sök & bevaka</button>
-      <a class="bg-nav-link" href="#bg-checkout">Min resa</a>
-      <a class="bg-nav-link" href="#kundservice">Kundservice</a>
-    </nav>
-
-    <div class="bg-right">
-        <div class="bg-login-dropdown">
-          <button id="bg-login-btn" class="bg-login-btn" type="button" aria-expanded="false" aria-haspopup="true">
-            Logga in
-            <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M7 14l5-5 5 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <div id="bg-login-menu" class="bg-login-menu" hidden>
-            <div class="bg-login-item">
-              <div class="bg-login-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                  <circle cx="12" cy="7" r="4"/>
-                </svg>
-              </div>
-              <div class="bg-login-content">
-                <div class="bg-login-title">Mitt konto</div>
-                <div class="bg-login-subtitle">Ta del av våra erbjudanden och tjänster</div>
-              </div>
-            </div>
-            <div class="bg-login-item">
-              <div class="bg-login-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
-                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
-                </svg>
-              </div>
-              <div class="bg-login-content">
-                <div class="bg-login-title">Företag</div>
-                <div class="bg-login-subtitle">Köp och skicka biljetter med företagskonto</div>
-              </div>
-            </div>
-            <div class="bg-login-register">
-              <p>Har du inget konto? <a href="#" class="bg-register-link">Registrera dig</a></p>
-            </div>
-          </div>
-        </div>
-      <button id="bg-burger" class="bg-burger" type="button" aria-label="Öppna meny" aria-expanded="false">
-        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
-      </button>
-    </div>
-  </div>
-</header>
 
   <!-- =========================================================
        MEGAPANELER
@@ -2003,8 +2351,91 @@
        SJ-LIK SÖK / BOKA – HUVUDKOMPONENT
        ========================================================= -->
 <div id="bg-sj-search" class="bg-wrap">
-    <div class="bg-form-shell">
-  <h2 class="bg-page-title">Boka din resa</h2>
+  <!-- Header flyttad inuti för perfekt jämnade kanter -->
+  <header class="bg-header" role="banner">
+    <div class="bg-header-inner">
+      <a class="bg-logo" href="/" aria-label="BiljettGarant – startsida">
+        <span class="bg-logo-mark">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+            <!-- Bakgrund - Gul cirkel med nedre vänstra hörnet avskuret (som favicon) -->
+            <path d="M 0 50 
+                     C 0 22.4 22.4 0 50 0 
+                     C 77.6 0 100 22.4 100 50 
+                     C 100 69.8 88.6 87 72 94.3 
+                     C 68.2 96 64 97 59.7 97 
+                     L 0 97 
+                     L 0 50 Z" 
+                  fill="#ffc500"/>
+            <!-- Bokstaven B - Mörk blå, stor och tjock -->
+            <text 
+              x="50" 
+              y="52" 
+              font-family="Arial Black, Arial, sans-serif" 
+              font-size="70" 
+              font-weight="900" 
+              fill="#1a2f4a" 
+              text-anchor="middle" 
+              dominant-baseline="central" 
+              style="letter-spacing: -2px;">B</text>
+          </svg>
+        </span>
+        <span class="bg-logo-text">BiljettGarant</span>
+      </a>
+
+      <nav class="bg-nav" aria-label="Huvudmeny">
+        <button class="bg-nav-btn" type="button" data-menu="resor" aria-controls="menu-resor" aria-expanded="false">Resor</button>
+        <button class="bg-nav-btn" type="button" data-menu="sok" aria-controls="menu-sok" aria-expanded="false">Sök & bevaka</button>
+        <a class="bg-nav-link" href="#bg-checkout">Min resa</a>
+        <a class="bg-nav-link" href="#kundservice">Kundservice</a>
+      </nav>
+
+      <div class="bg-right">
+        <div class="bg-login-dropdown">
+          <button id="bg-login-btn" class="bg-login-btn" type="button" aria-expanded="false" aria-haspopup="true">
+            Logga in
+            <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 14l5-5 5 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="bg-login-menu" class="bg-login-menu" hidden>
+            <div class="bg-login-item">
+              <div class="bg-login-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </div>
+              <div class="bg-login-content">
+                <div class="bg-login-title">Mitt konto</div>
+                <div class="bg-login-subtitle">Ta del av våra erbjudanden och tjänster</div>
+              </div>
+            </div>
+            <div class="bg-login-item">
+              <div class="bg-login-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                </svg>
+              </div>
+              <div class="bg-login-content">
+                <div class="bg-login-title">Företag</div>
+                <div class="bg-login-subtitle">Köp och skicka biljetter med företagskonto</div>
+              </div>
+            </div>
+            <div class="bg-login-register">
+              <p>Har du inget konto? <a href="#" class="bg-register-link">Registrera dig</a></p>
+            </div>
+          </div>
+        </div>
+        <button id="bg-burger" class="bg-burger" type="button" aria-label="Öppna meny" aria-expanded="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="bg-form-shell">
+    <h2 class="bg-page-title">Boka din resa</h2>
 
       <!-- Rad 1: Från / Vänd / Till -->
 <div class="bg-grid">
@@ -3843,7 +4274,17 @@ window.quickSearchByNames = quickSearchByNames;
          ======================================================= */
       const modal = document.getElementById('bg-modal'),
             modalBody = document.getElementById('bg-modal-body');
+      
+      // Stäng modal med X-knappen
       document.getElementById('bg-modal-close')?.addEventListener('click', () => modal.hidden = true);
+      
+      // Stäng modal när man klickar utanför kortet (på bakgrunden)
+      modal?.addEventListener('click', (e) => {
+        // Stäng endast om man klickar direkt på bakgrunden (.bg-modal), inte på kortet (.bg-dialog)
+        if (e.target === modal) {
+          modal.hidden = true;
+        }
+      });
 
       function openDetails(t) {
   const fmtTime = s => {
